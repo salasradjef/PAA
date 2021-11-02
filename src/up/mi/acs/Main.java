@@ -46,7 +46,7 @@ public class Main {
 				boolean pirate_exist = false;	
 				
 				do {
-					System.out.println("Quel est le nom du 1er pirate de cette relation?");
+					System.out.println("Quel est le nom du premier pirate de cette relation?");
 					String A = sc.next();
 				
 					if(equipage.findPirateByID(A) != null) {
@@ -65,14 +65,16 @@ public class Main {
 						pirate_exist = true;
 						
 					}
-				
+					else {
+						System.out.println("Le pirate que vous avez entré n'existe pas.");
+					}
 				} while(pirate_exist != true);
 				
 				
 				if((pirate_exist) && (Ap!=Bp)) {
 					equipage.addRelation(Ap,Bp);	
 				}else {
-					System.out.println("Erreur");
+					System.out.println("Erreur lors de l'ajout de la relation. Veuillez réessayer.");
 				}
 				
 			}
@@ -101,10 +103,11 @@ public class Main {
 					if(validation) {
 						Pirate A = equipage.findPirateByID(preferences[0]);
 						A.addPreference(preferences);
+						System.out.println("Les préférences du pirate " + A.getID() + " ont été mises à jour.");
 						
 					}
 					/*else {
-						System.out.println("Syntaxe incorrecte");
+						System.out.println("Syntaxe incorrecte, les préférences du pirate n'ont pas été mises à jour.");
 					}*/
 					
 				} while(validation != true);
@@ -112,18 +115,7 @@ public class Main {
 				
 			}
 			
-			
-			if(reponse == -1) {
-				System.out.println("Choix invalide, merci de choisir parmi les possibilités 1, 2 ou 3. ");
-			}
-			
-			
-
 		//}
-		
-		
-		
-		
 		
 			if(reponse ==3) {
 				boolean verify = true;
@@ -134,7 +126,7 @@ public class Main {
 					for(int j =0;j<nombre_pirate;j++) {
 						if(pref[j] == null) {
 							verify = false;
-							System.out.println("Il manque des préférences pour le pirate " + tmp.getID());
+							System.out.println("Il manque une préférence pour le pirate " + tmp.getID());
 						}
 					}
 					
@@ -151,72 +143,76 @@ public class Main {
 					
 				}
 			}
+			if ( reponse == -1) {
+				System.out.println("Votre réponse n'est pas valide");
+			}
 		} 
 				
 				boolean termine2 = false;
 				while(!termine2) {
 					reponse = Menu2(sc);
-						for(int i=0;i<nombre_pirate;i++) {
-						System.out.println(equipage.getEquipage().get(i).getID() + ":" + equipage.objet_recu.get(equipage.getEquipage().get(i)));
-						}	
-					
+						
 					
 						if(reponse == 1) {
 							//String B;
 							Pirate Ap=null,Bp=null;
 							boolean pirate_exist = false;	
 							
-							
-							
 							while(pirate_exist != true) {
 								
-								System.out.println("Quel est le nom du pirate 1?");
+								System.out.println("Quel est le nom du premier pirate participant à l'échange?");
 								String A = sc.next();
-								
-								
 								
 								if(equipage.findPirateByID(A) != null) {
 									pirate_exist = true;
 									Ap = equipage.findPirateByID(A);
-									
-
+							
 								}
-				
-								
 							}
 							
 							pirate_exist = false;
 							while(pirate_exist != true) {
-								System.out.println("Quel est le nom du pirate 2?");
+								System.out.println("Quel est le nom du second pirate participant à l'échange?");
 								String B = sc.next();
 								if(equipage.findPirateByID(B) != null) {
 									Bp = equipage.findPirateByID(B);
 									pirate_exist = true;
 									
 								}
-							
+								else {
+									System.out.println("Le pirate que vous avez entré n'existe pas.");
+								}
+								
 							}
 							
 							
 							if(pirate_exist) {
-								equipage.changerObjet(Ap, Bp);	
+								equipage.changerObjet(Ap, Bp);
+								System.out.println("Les objets des deux pirates ont bien été échangés. ");
 							}else {
-								System.out.println("err");
+								System.out.println("Erreur lors de l'échange des objets. Veuillez réessayer.");
 							}
 
 						}
 						
 						if(reponse == 2) {
-							System.out.println(equipage.cost());
+							System.out.println("Le coût de la solution actuelle est " + equipage.cost()+".");
 						}
 						
+						for(int i=0;i<nombre_pirate;i++) {
+							System.out.println(equipage.getEquipage().get(i).getID() + ":" + "o"+equipage.objet_recu.get(equipage.getEquipage().get(i)));
+							}	
+						
 						if(reponse == 3) {
-							termine = true;
+							termine2 = true;
 							System.out.println("Vous quittez le programme.");
-							sc.close();
+							
+						}
+						if (reponse == -1) {
+							System.out.println("Votre réponse n'est pas valide");
 						}
 				
-					} ;
+					} sc.close();
 			/*}
 			else {
 				System.out.println("Erreur : Vous n'avez pas encore ajouté toutes les préférences pour chacun des pirates.");
@@ -267,7 +263,7 @@ public class Main {
 		case 2: 
 			return 2;
 		case 3:
-			return 4;
+			return 3;
 		default:
 			return -1;
 		}
