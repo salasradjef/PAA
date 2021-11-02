@@ -152,7 +152,6 @@ public class Main {
 				equipage.affectationNaive();
 				
 				
-				
 				while(reponse !=4) {
 					reponse = Menu2(sc);
 						for(int i=0;i<nombre_pirate;i++) {
@@ -206,7 +205,7 @@ public class Main {
 						}
 						
 						if(reponse==2) {
-							System.out.println("reponse 2");
+							System.out.println(equipage.cost());
 						}
 						
 						if(reponse == -1) {

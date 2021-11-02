@@ -34,13 +34,7 @@ public class Equipage {
 		
 	}
 	
-	
-	
-	
-	
 
-	
-	
 	private void initRelation(){
 
 		for(int i =0;i<this.nombre_pirate;i++) {
@@ -62,7 +56,7 @@ public class Equipage {
 		
 		
 		if(validation) {
-			this.relation_pirate[P_A][P_B]= 1;
+			this.relation_pirate[P_A][P_B] = 1;
 			this.relation_pirate[P_B][P_A] = 1;
 			
 			System.out.println("La relation  ne s'aiment pas entre " +  A.getID() + " et " + B.getID() +" a bien été ajouté" );
@@ -78,7 +72,6 @@ public class Equipage {
 	
 	
 	
-	
 	public Pirate findPirateByID(String ID) {
 		
 		Pirate tmp=null;
@@ -88,9 +81,6 @@ public class Equipage {
 			}
 		}
 		
-		
-		
-		
 		return tmp;
 	}
 	
@@ -98,7 +88,6 @@ public class Equipage {
 	
 	public void affectationNaive() {
 		ArrayList<String> affecte = new ArrayList<String>();
-		int cmp_affecte=0;
 		for(int i =0;i<nombre_pirate;i++) {
 			Pirate tmp = this.equipage.get(i);
 			String[] obj = tmp.getPreference();
@@ -108,7 +97,6 @@ public class Equipage {
 				if(!isIn(obj[j], affecte)) {
 					this.objet_recu.put(tmp, obj[j]);
 					affecte.add(obj[j]);
-					cmp_affecte++;
 					break;
 				}
 			}
@@ -132,16 +120,78 @@ public class Equipage {
 	}
 	
 	
+	
 	public int cost() {
 		
+		ArrayList<String> jaloux = new ArrayList<String>();
+		for(int i=0;i<this.nombre_pirate;i++) {
+			for(int j =0;j<this.nombre_pirate;j++) {
+				if(i !=j) {
+					if(isJealouse(this.equipage.get(i), this.equipage.get(j))) {
+						if(!isIn(this.equipage.get(i).getID(), jaloux)) {
+							jaloux.add(this.equipage.get(i).getID());
+						}
+					}
+				}
+			}
+		}
 		
-		return 0;
+		return jaloux.size();
 	}
+	
+	
+	public boolean isJealouse(Pirate A, Pirate B) {
+		if(hateRelation(A,B)) {
+			
+			
+			int IDrecuA = A.findIDofPref(this.objet_recu.get(A));
+			int IDrecuB = A.findIDofPref(this.objet_recu.get(B));
+
+			if(IDrecuA > IDrecuB) {
+				return true;
+			}else {
+				return false;
+			}
+			
+			}else {
+			return false;
+		}
+		
+		
+	}
+	
+	public boolean hateRelation(Pirate A , Pirate B) {
+	
+	int a = this.relation_pirate[ALPHABET.getIDofALPHABET(A.getID())][ALPHABET.getIDofALPHABET(B.getID())];	
+	int b = this.relation_pirate[ALPHABET.getIDofALPHABET(B.getID())][ALPHABET.getIDofALPHABET(A.getID())];
+	
+		if(a ==1 && b ==1) {
+			return true;
+		}else {
+			return false;
+		}
+	
+	}
+	
 	
 	private boolean isIn(String x, ArrayList<String> xs) {
 		 boolean isIn = false;
 		for(int i =0;i<xs.size();i++) {
 			if(x.equals(xs.get(i))) {
+				isIn =true;
+			}
+		}
+		
+		
+		
+		return isIn;
+	}
+	
+	
+	private boolean isIn(String x, String[] xs) {
+		 boolean isIn = false;
+		for(int i =0;i<xs.length;i++) {
+			if(x.equals(xs[i])) {
 				isIn =true;
 			}
 		}

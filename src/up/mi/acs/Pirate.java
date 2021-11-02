@@ -20,6 +20,20 @@ public class Pirate {
 		}
 	}
 	
+	
+	public int findIDofPref(String x) {
+		int ID=-1;
+		
+		for(int i=0;i<this.preference.length;i++) {
+			if(x.equals(this.preference[i])) {
+				ID = i;
+			}
+		}
+		
+		return ID;
+	}
+	
+	
 	public void getPref(int nbr) {
 		for(int i=0;i<nbr;i++){
 			System.out.println(this.preference[i]);
