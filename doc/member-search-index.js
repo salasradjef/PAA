@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"up.mi.naa","c":"Main","l":"Main()","u":"%3Cinit%3E()"},{"p":"up.mi.naa","c":"Main","l":"main(String[])","u":"main(java.lang.String[])"},{"p":"up.mi.naa","c":"Main","l":"Menu(Scanner)","u":"Menu(java.util.Scanner)"},{"p":"up.mi.naa","c":"Main","l":"Menu2(Scanner)","u":"Menu2(java.util.Scanner)"}];updateSearchResults();
