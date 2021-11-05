@@ -27,7 +27,7 @@ public class Main {
 		Equipage equipage = new Equipage(nombre_pirate);
 		
 		
-		int reponse=-1; // valeur du default
+		int reponse=-1; // valeur par default
 		boolean termine = false; 
 		
 		while(!termine) {
