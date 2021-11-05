@@ -1,7 +1,5 @@
 package up.mi.acs;
 
-
-
 /**
  *Classe qui permet d'avoir les lettres alphabétiques en majuscules qui vont 
  *correspondre au nom des pirates.
@@ -20,7 +18,7 @@ public class ALPHABET {
 	 * paramètre dans le tableau de String ALPHABET
 	 * 
 	 * @param S  lettre pour laquelle nous voulons connaitre l'indice
-	 * @return l'indice de la lettre passer en paramètre sinon -1 dans le cas ou la lettre n'est pas dans ALPHABET
+	 * @return l'indice de la lettre passée en paramètre sinon -1 dans le cas ou la lettre n'est pas dans ALPHABET
 	 */
 	public static int getIDofALPHABET(String S) {
 		Boolean trouver= false;

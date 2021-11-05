@@ -27,7 +27,7 @@ public class Main {
 		Equipage equipage = new Equipage(nombre_pirate);
 		
 		
-		int reponse=-1; // valeur par default
+		int reponse=-1; // valeur du default
 		boolean termine = false; 
 		
 		while(!termine) {
@@ -207,7 +207,7 @@ public class Main {
 						
 						for(int i=0;i<nombre_pirate;i++) {
 							System.out.println(equipage.getEquipage().get(i).getID() + ":" + "o"+equipage.objet_recu.get(equipage.getEquipage().get(i)));
-							}	// affiche les objets que possède chaque pirate après chaque action ( 1 ou 2 ). 
+							}	// affiche les objets que possède chaque pirate après chaque action. 
 								// Nous avons déterminés à la lecture du sujet qu'il n'était pas nécessaire de le faire après l'affectation naive,
 								// car il serait logique de s'intéresser au coût de cette dernière avant d'effectuer les échanges d'objets.
 						
