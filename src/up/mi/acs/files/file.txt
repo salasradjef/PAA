@@ -1,0 +1,11 @@
+pirate(nom_pirate_1).
+pirate(nom_pirate_2).
+pirate(nom_pirate_3).
+objet(nom_objet_1).
+objet(nom_objet_2).
+objet(nom_objet_3).
+deteste(nom_pirate_1,nom_pirate_2).
+deteste(nom_pirate_2,nom_pirate_3).
+preferences(nom_pirate_1,nom_objet_1,nom_objet_2,nom_objet_3).
+preferences(nom_pirate_2,nom_objet_2,nom_objet_1,nom_objet_3).
+preferences(nom_pirate_3,nom_objet_3,nom_objet_1,nom_objet_2).
