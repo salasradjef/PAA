@@ -1,8 +1,23 @@
 package up.mi.acs;
 
+import java.util.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+
+/**
+ * La classe Equipage reprï¿½sente un equipage, elle permet d'effectuer diffï¿½rentes actions sur les pirates
+ * dont les principales definir le nombre de pirates de l'equipage et les
+ * relations entre eux ainsi que d'attribuer a chaque pirate l'objet recu apres
+ * la rï¿½partition des biens selon l'utilisateur.
+ * @author Salas RADJEF
+ * @author Christopher VIET
+ * @author Amel NAIT AMER
+ * 
+ *
+ */
 public class Equipage {
 	private ArrayList<Pirate> equipage;
 	private int[][] relation_pirate;
@@ -30,6 +45,28 @@ public class Equipage {
 		
 	}
 	
+	public Equipage(ArrayList<String> listPirate, ArrayList<String> listObjet, HashMap<String,String> listeDeteste,  HashMap<String,ArrayList<String>> listPref) {
+		this.nombre_pirate = listPirate.size();
+		
+		ArrayList<Pirate> equipage = new ArrayList<Pirate>();
+		for (String s : listPirate) {
+			Pirate p = new Pirate(s);
+			String[] prefs = new String[listPref.size()];
+			for (int i = 0; i <listPref.get(p).size(); i++) {
+				prefs[i] = listPref.get(p).get(i);
+			}
+			p.addPreference(prefs);
+			equipage.add(p);
+		}
+		this.relation_pirate = new int[this.nombre_pirate][this.nombre_pirate];
+		initRelation();
+		for (String key : listeDeteste.keySet() ) {
+			
+		}
+		
+		
+	}
+	
 
 	private void initRelation(){
 
@@ -40,6 +77,16 @@ public class Equipage {
 		}
 	}
 
+	
+	/**
+	 * La mï¿½thode addRelation permet ï¿½ l'utilisateur d'ajouter une relation de rancoeur entre
+	 * deux pirates en ajoutant 1 ï¿½ la matrice d'adjacence qui reprï¿½sente un graphe  
+	 * 
+	 * @param A reprï¿½sente le pirate qui aura la relation "n'aime pas" avec le
+	 *          pirate B
+	 * @param B reprï¿½sente le second pirate qui va partager la relation "n'aime pas"
+	 *          avec A
+	 */
 	public void addRelation(Pirate A, Pirate B) {
 		int P_A, P_B;
 		Boolean validation = false;
@@ -55,18 +102,22 @@ public class Equipage {
 			this.relation_pirate[P_A][P_B] = 1;
 			this.relation_pirate[P_B][P_A] = 1;
 			
-			System.out.println("La relation  ne s'aiment pas entre " +  A.getID() + " et " + B.getID() +" a bien été ajoutée" );
+			System.out.println("La relation  ne s'aiment pas entre " +  A.getID() + " et " + B.getID() +" a bien ete ajoutee" );
 		}else {
-			System.out.print("Une erreur est survenue et la relation n'a pas pu être ajoutée ");
+			System.out.print("Une erreur est survenue et la relation n'a pas pu ï¿½tre ajoutï¿½e ");
 		}
-		
-		
-	
-		
-		
+
 	}
 	
-	
+	/**
+	 * La methode findPirateByID permet de rï¿½cupï¿½rer un pirate ï¿½ partir de son ID (l'ID d'un pirate passï¿½ en
+	 * paramï¿½tre) un pirate se trouve dans dans l'ArrayList qui reprï¿½sente les
+	 * membres de l'equipage
+	 * 
+	 * @param ID reprï¿½sente l'ID du pirate, ce qui le distingue des autres pirates
+	 * @return l'objet pirate dans le cas oï¿½ nous l'avons trouvï¿½ qu'il appartient ï¿½
+	 *         l'equipage sinon elle retourne null
+	 */
 	
 	public Pirate findPirateByID(String ID) {
 		
@@ -79,9 +130,13 @@ public class Equipage {
 		
 		return tmp;
 	}
-	
 
-	
+	/**
+	 * La mï¿½thode affectationNaive permet d'affecter de faï¿½on naï¿½ve ï¿½ chaque pirate un objet parmi
+	 * ceux qu'il y ï¿½ partager en fonction des prï¿½fï¿½rences de chaqu'un. 
+	 * Chaque pirate sera associï¿½ ï¿½ un objet et sera
+	 * reprï¿½sentï¿½ dans une HashMap <Pirate,objet>
+	 */
 	public void affectationNaive() {
 		ArrayList<String> affecte = new ArrayList<String>();
 		for(int i =0;i<nombre_pirate;i++) {
@@ -96,13 +151,17 @@ public class Equipage {
 					break;
 				}
 			}
-			
-			
 		}
-		
-	
-		
 	}
+	
+	/**
+	 * La methode changerObjet permet ï¿½ l'utilisateur d'ï¿½changer les objets entre deux pirates en
+	 * utilisant la HashMap
+	 * 
+	 * @param A reprï¿½sente le pirate qui a l'un des objets a echanger
+	 * @param B reprï¿½sente le pirate avec qui il va echanger objet avec le pirate
+	 *          du premier parametre
+	 */
 	
 	public void changerObjet(Pirate A, Pirate B) {
 		String recuA = this.objet_recu.get(A);
@@ -110,19 +169,21 @@ public class Equipage {
 		
 		this.objet_recu.replace(A, recuB);
 		this.objet_recu.replace(B, recuA);
-		
-		
-		
 	}
-	
-	
+
+	/**
+	 * La mï¿½thode calcule le nombre de pirates jaloux dans l'ï¿½quipage aprï¿½s
+	 * l'attribution des objets
+	 * 
+	 * @return le nombre de pirates jaloux
+	 */
 	
 	public int cost() {
 		
-		ArrayList<String> jaloux = new ArrayList<String>();
+		ArrayList<String> jaloux = new ArrayList<String>(); //Liste des pirates jaloux 
 		for(int i=0;i<this.nombre_pirate;i++) {
 			for(int j =0;j<this.nombre_pirate;j++) {
-				if(i !=j) {
+				if(i !=j) { 
 					if(estJaloux(this.equipage.get(i), this.equipage.get(j))) {
 						if(!isIn(this.equipage.get(i).getID(), jaloux)) {
 							jaloux.add(this.equipage.get(i).getID());
@@ -134,12 +195,20 @@ public class Equipage {
 		
 		return jaloux.size();
 	}
+
+
 	
+	/**
+	 * La mï¿½thode vï¿½rifie si le pirate A est jaloux du pirate B
+	 * 
+	 * @param A reprï¿½sente un pirate de l'ï¿½quipage pour lequel on vï¿½rifie s'il est
+	 *          jaloux du pirate B
+	 * @param B reprï¿½sente un pirate de l'ï¿½quipage
+	 * @return true si le pirate A est jaloux du pirate B sinon retourne faux
+	 */
 	
 	public boolean estJaloux(Pirate A, Pirate B) {
 		if(hateRelation(A,B)) {
-			
-			
 			int IDrecuA = A.findIDofPref(this.objet_recu.get(A));
 			int IDrecuB = A.findIDofPref(this.objet_recu.get(B));
 
@@ -148,13 +217,20 @@ public class Equipage {
 			}else {
 				return false;
 			}
-			
 			}else {
 			return false;
 		}
 		
 		
 	}
+	
+	/**
+	 * La methode hateRelation verifie si deux pirates ne s'aiment pas
+	 * 
+	 * @param A represente un pirate de l'equipage
+	 * @param B represente un pirate de l'equipage
+	 * @return true si le pirate A et le pirate B se detestent sinon retourne faux
+	 */
 	
 	public boolean hateRelation(Pirate A , Pirate B) {
 	
@@ -170,6 +246,15 @@ public class Equipage {
 	}
 	
 	
+	
+	/**
+	 * mï¿½thode qui vï¿½rifie si l'ID (nom) x d'un pirate se trouve dans un ArrayList
+	 * xs
+	 * 
+	 * @param x  reprï¿½sente une chaine de caractï¿½res (String)
+	 * @param xs reprï¿½sente un tableau dynamique (Tableau de String)
+	 * @return true si x appartient au  tableau dynamique xs
+	 */
 	private boolean isIn(String x, ArrayList<String> xs) {
 		 boolean isIn = false;
 		for(int i =0;i<xs.size();i++) {
@@ -183,7 +268,6 @@ public class Equipage {
 		return isIn;
 	}
 	
-	
 	private boolean isIn(String x, String[] xs) {
 		 boolean isIn = false;
 		for(int i =0;i<xs.length;i++) {
@@ -191,36 +275,23 @@ public class Equipage {
 				isIn =true;
 			}
 		}
-		
-		
-		
 		return isIn;
 	}
-	
+
+
+
 
 	public ArrayList<Pirate> getEquipage() {
 		return equipage;
 	}
 
-
-
-
-
 	public void setEquipage(ArrayList<Pirate> equipage) {
 		this.equipage = equipage;
 	}
 
-
-
-
-
 	public int[][] getRelation_pirate() {
 		return relation_pirate;
 	}
-
-
-
-
 
 	public void setRelation_pirate(int[][] relation_pirate) {
 		this.relation_pirate = relation_pirate;
