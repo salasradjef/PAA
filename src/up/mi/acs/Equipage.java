@@ -1,7 +1,6 @@
 package up.mi.acs;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,11 +84,7 @@ public class Equipage {
 		}else {
 			System.out.print("Une erreur est survenue et la relation n'a pas pu �tre ajout�e ");
 		}
-		
-		
-	
-		
-		
+
 	}
 	
 	/**
@@ -113,9 +108,7 @@ public class Equipage {
 		
 		return tmp;
 	}
-	
 
-	
 	/**
 	 * La m�thode affectationNaive permet d'affecter de fa�on na�ve � chaque pirate un objet parmi
 	 * ceux qu'il y � partager en fonction des pr�f�rences de chaqu'un. 
@@ -136,12 +129,7 @@ public class Equipage {
 					break;
 				}
 			}
-			
-			
 		}
-		
-	
-		
 	}
 	
 	/**
@@ -150,7 +138,7 @@ public class Equipage {
 	 * 
 	 * @param A repr�sente le pirate qui a l'un des objets a echanger
 	 * @param B repr�sente le pirate avec qui il va echanger objet avec le pirate
-	 *          du premier param�tre
+	 *          du premier parametre
 	 */
 	
 	public void changerObjet(Pirate A, Pirate B) {
@@ -159,11 +147,7 @@ public class Equipage {
 		
 		this.objet_recu.replace(A, recuB);
 		this.objet_recu.replace(B, recuA);
-		
-		
-		
 	}
-	
 
 	/**
 	 * La m�thode calcule le nombre de pirates jaloux dans l'�quipage apr�s
@@ -189,6 +173,8 @@ public class Equipage {
 		
 		return jaloux.size();
 	}
+
+
 	
 	/**
 	 * La m�thode v�rifie si le pirate A est jaloux du pirate B
@@ -201,8 +187,6 @@ public class Equipage {
 	
 	public boolean estJaloux(Pirate A, Pirate B) {
 		if(hateRelation(A,B)) {
-			
-			
 			int IDrecuA = A.findIDofPref(this.objet_recu.get(A));
 			int IDrecuB = A.findIDofPref(this.objet_recu.get(B));
 
@@ -211,7 +195,6 @@ public class Equipage {
 			}else {
 				return false;
 			}
-			
 			}else {
 			return false;
 		}
@@ -220,11 +203,11 @@ public class Equipage {
 	}
 	
 	/**
-	 * La m�thode hateRelation v�rifie si deux pirates ne s'aiment pas
+	 * La methode hateRelation verifie si deux pirates ne s'aiment pas
 	 * 
-	 * @param A repr�sente un pirate de l'�quipage
-	 * @param B repr�sente un pirate de l'�quipage
-	 * @return true si le pirate A et le pirate B se d�testent sinon retourne faux
+	 * @param A represente un pirate de l'equipage
+	 * @param B represente un pirate de l'equipage
+	 * @return true si le pirate A et le pirate B se detestent sinon retourne faux
 	 */
 	
 	public boolean hateRelation(Pirate A , Pirate B) {
