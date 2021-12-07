@@ -18,7 +18,7 @@ public class Main {
 			nombre_pirate = sc.nextInt();
 			
 			if(nombre_pirate < 1 | nombre_pirate > 26) {
-				System.out.println("Le nombre de pirates doit être compris en 1 et 26.");
+				System.out.println("Le nombre de pirates doit ï¿½tre compris en 1 et 26.");
 			}
 	
 		}
@@ -58,7 +58,7 @@ public class Main {
 						
 					}
 					else {
-						System.out.println("Le pirate que vous avez entré n'existe pas.");
+						System.out.println("Le pirate que vous avez entrï¿½ n'existe pas.");
 					}
 				} while(pirate_exist != true);
 				
@@ -66,7 +66,7 @@ public class Main {
 				if((pirate_exist) && (Ap!=Bp)) {
 					equipage.addRelation(Ap,Bp);	
 				}else {
-					System.out.println("Erreur lors de l'ajout de la relation. Veuillez réessayer.");
+					System.out.println("Erreur lors de l'ajout de la relation. Veuillez rï¿½essayer.");
 				}
 				
 			}
@@ -76,27 +76,27 @@ public class Main {
 				
 				boolean validation = false;
 				int i = 0;  
-				// compteur qui sert à ne pas déclencher le message d'erreur du else ci-dessous avant l'écriture dans le menu. 
-				// En effet, le sc.nextLine() fait faire un passage dans la boucle do while avant de récupérer ce qui est entré par l'utilisateur.
-				// Ce problème n'existe pas ailleurs car on utilise sc.next(), or on ne peut pas faire cela ici  car cela produit une erreur lorsque l'on fait .split()
+				// compteur qui sert ï¿½ ne pas dï¿½clencher le message d'erreur du else ci-dessous avant l'ï¿½criture dans le menu. 
+				// En effet, le sc.nextLine() fait faire un passage dans la boucle do while avant de rï¿½cupï¿½rer ce qui est entrï¿½ par l'utilisateur.
+				// Ce problï¿½me n'existe pas ailleurs car on utilise sc.next(), or on ne peut pas faire cela ici  car cela produit une erreur lorsque l'on fait .split()
 				
-				System.out.println("Pour ajouter des préferences à un pirate, merci de suivre la syntaxe suivante :");
+				System.out.println("Pour ajouter des prï¿½ferences ï¿½ un pirate, merci de suivre la syntaxe suivante :");
 				System.out.println("idPIRATE pref1 pref2 ... prefn");
 				// on indique la syntaxe correcte pour que le split(" ") fonctionne correctement
-				// Par exemple , il faut taper 'A 1 2 3' dans le cas où nombre_pirate =3.
+				// Par exemple , il faut taper 'A 1 2 3' dans le cas oï¿½ nombre_pirate =3.
 				
 				do{
 					i++;
 					
 					String preference = sc.nextLine();
 					String[] preferences = preference.split(" ");	
-					int tests = 0; // compteur qui sert à vérifier que chacune des préférences entrées au clavier est valable.
+					int tests = 0; // compteur qui sert ï¿½ vï¿½rifier que chacune des prï¿½fï¿½rences entrï¿½es au clavier est valable.
 					
 					if((equipage.findPirateByID(preferences[0]) != null) && (preferences.length == (nombre_pirate + 1))) {
 						for (int j = 1; j< preferences.length; j++) {
 							if ( (preferences[j].matches("-?\\d+")) && (Integer.parseInt(preferences[j]) <= nombre_pirate )) {
-								// on vérifie que les préférences entrées sont bien des entiers avec  .matches(), le "-?\\d+" est une syntaxe trouvée après recherche web
-								// et on vérifie que l'entier en question est bien inférieur au nombre de pirates, càd correspond à un objet qu'il est possible d'attribuer.
+								// on vï¿½rifie que les prï¿½fï¿½rences entrï¿½es sont bien des entiers avec  .matches(), le "-?\\d+" est une syntaxe trouvï¿½e aprï¿½s recherche web
+								// et on vï¿½rifie que l'entier en question est bien infï¿½rieur au nombre de pirates, cï¿½d correspond ï¿½ un objet qu'il est possible d'attribuer.
 								tests++;
 							}
 						}
@@ -109,11 +109,11 @@ public class Main {
 					if(validation) {
 						Pirate A = equipage.findPirateByID(preferences[0]);
 						A.addPreference(preferences);
-						System.out.println("Les préférences du pirate " + A.getID() + " ont été mises à jour.");
+						System.out.println("Les prï¿½fï¿½rences du pirate " + A.getID() + " ont ï¿½tï¿½ mises ï¿½ jour.");
 						
 					}
 					if ( (!validation ) && i>1)  {
-						System.out.println("Syntaxe incorrecte, les préférences du pirate n'ont pas été mises à jour.");
+						System.out.println("Syntaxe incorrecte, les prï¿½fï¿½rences du pirate n'ont pas ï¿½tï¿½ mises ï¿½ jour.");
 					}
 					
 				} while(validation != true);
@@ -132,8 +132,8 @@ public class Main {
 					for(int j =0;j<nombre_pirate;j++) {
 						if(pref[j] == null) {
 							verify = false;
-							System.out.println("Il manque une préférence pour le pirate " + tmp.getID());
-						} // Cette boucle vérifie que chaque pirate possède bien n préférences. Elle affiche un message pour chaque préférence manquante.
+							System.out.println("Il manque une prï¿½fï¿½rence pour le pirate " + tmp.getID());
+						} // Cette boucle vï¿½rifie que chaque pirate possï¿½de bien n prï¿½fï¿½rences. Elle affiche un message pour chaque prï¿½fï¿½rence manquante.
 					}
 					
 				}
@@ -144,14 +144,14 @@ public class Main {
 					termine = true;
 				}
 				else {
-					System.out.println("Erreur : Vous n'avez pas encore ajouté toutes les préférences pour chacun des pirates.");
-					System.out.println("Veuillez ajouter les préférences manquantes avant de continuer. ");
+					System.out.println("Erreur : Vous n'avez pas encore ajoutï¿½ toutes les prï¿½fï¿½rences pour chacun des pirates.");
+					System.out.println("Veuillez ajouter les prï¿½fï¿½rences manquantes avant de continuer. ");
 					
 				}
 			}
 			if ( reponse == -1) {
-				System.out.println("Votre réponse n'est pas valide");
-			} // le default du switch du menu renvoie -1, donc toutes valeurs qui ne sont pas entre 1 et 3 sont renvoyés dans ce if.
+				System.out.println("Votre rï¿½ponse n'est pas valide");
+			} // le default du switch du menu renvoie -1, donc toutes valeurs qui ne sont pas entre 1 et 3 sont renvoyï¿½s dans ce if.
 		} 
 				
 				boolean termine2 = false;
@@ -166,7 +166,7 @@ public class Main {
 							
 							while(pirate_exist != true) {
 								
-								System.out.println("Quel est le nom du premier pirate participant à l'échange?");
+								System.out.println("Quel est le nom du premier pirate participant ï¿½ l'ï¿½change?");
 								String A = sc.next();
 								
 								if(equipage.findPirateByID(A) != null) {
@@ -178,7 +178,7 @@ public class Main {
 							
 							pirate_exist = false;
 							while(pirate_exist != true) {
-								System.out.println("Quel est le nom du second pirate participant à l'échange?");
+								System.out.println("Quel est le nom du second pirate participant ï¿½ l'ï¿½change?");
 								String B = sc.next();
 								if(equipage.findPirateByID(B) != null) {
 									Bp = equipage.findPirateByID(B);
@@ -186,7 +186,7 @@ public class Main {
 									
 								}
 								else {
-									System.out.println("Le pirate que vous avez entré n'existe pas.");
+									System.out.println("Le pirate que vous avez entrï¿½ n'existe pas.");
 								}
 								
 							}
@@ -194,22 +194,22 @@ public class Main {
 							
 							if(pirate_exist) {
 								equipage.changerObjet(Ap, Bp);
-								System.out.println("Les objets des deux pirates ont bien été échangés. ");
+								System.out.println("Les objets des deux pirates ont bien ï¿½tï¿½ ï¿½changï¿½s. ");
 							}else {
-								System.out.println("Erreur lors de l'échange des objets. Veuillez réessayer.");
+								System.out.println("Erreur lors de l'ï¿½change des objets. Veuillez rï¿½essayer.");
 							}
 
 						}
 						
 						if(reponse == 2) {
-							System.out.println("Le coût de la solution actuelle est " + equipage.cost()+".");
+							System.out.println("Le coï¿½t de la solution actuelle est " + equipage.cost()+".");
 						}
 						
 						for(int i=0;i<nombre_pirate;i++) {
 							System.out.println(equipage.getEquipage().get(i).getID() + ":" + "o"+equipage.objet_recu.get(equipage.getEquipage().get(i)));
-							}	// affiche les objets que possède chaque pirate après chaque action. 
-								// Nous avons déterminés à la lecture du sujet qu'il n'était pas nécessaire de le faire après l'affectation naive,
-								// car il serait logique de s'intéresser au coût de cette dernière avant d'effectuer les échanges d'objets.
+							}	// affiche les objets que possï¿½de chaque pirate aprï¿½s chaque action. 
+								// Nous avons dï¿½terminï¿½s ï¿½ la lecture du sujet qu'il n'ï¿½tait pas nï¿½cessaire de le faire aprï¿½s l'affectation naive,
+								// car il serait logique de s'intï¿½resser au coï¿½t de cette derniï¿½re avant d'effectuer les ï¿½changes d'objets.
 						
 						if(reponse == 3) {
 							termine2 = true;
@@ -217,7 +217,7 @@ public class Main {
 							
 						}
 						if (reponse == -1) {
-							System.out.println("Votre réponse n'est pas valide");
+							System.out.println("Votre rï¿½ponse n'est pas valide");
 						}
 				
 					} sc.close();
@@ -233,7 +233,7 @@ public class Main {
 	public static int Menu(Scanner sc) {
 		System.out.println("*-------Menu-------*");
 		System.out.println("1)->Ajouter une relation");
-		System.out.println("2)->Ajouter des préférences");
+		System.out.println("2)->Ajouter des prï¿½fï¿½rences");
 		System.out.println("3)->Fin");
 		int key = sc.nextInt();
 		switch (key) {
@@ -254,7 +254,7 @@ public class Main {
 	public static int Menu2(Scanner sc) {
 		System.out.println("*-------Menu 2-------*");
 		System.out.println("1)->Echanger objets");
-		System.out.println("2)->Afficher Coût");
+		System.out.println("2)->Afficher Coï¿½t");
 		System.out.println("3)-> Fin");
 		int key = sc.nextInt();
 		switch (key) {
@@ -270,6 +270,15 @@ public class Main {
 	
 	
 		
+	}
+
+	public static void Menu3(){
+		System.out.println("*-------Menu-------*");
+		System.out.println("1)->RÃ©solution automatique");
+		System.out.println("2)->RÃ©solution manuelle");
+		System.out.println("3)-> Sauvgarde");
+		System.out.println("4)-> Fin");
+
 	}
 	
 	
