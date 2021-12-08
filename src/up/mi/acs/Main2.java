@@ -1,10 +1,7 @@
 package up.mi.acs;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -14,8 +11,21 @@ public class Main2 {
 	public static void main(String[] args) {
 		//lire le fichier en ligne de commande ??
 		
-		Reader reader = new Reader(path);
-		Equipage equipage = new Equipage();
+		Reader reader = null;
+		try {
+			reader = new Reader(args[0]);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		System.out.println("1 =" + reader.getLines());
+		System.out.println("2 =" + reader.getListPirate());
+		System.out.println("3 =" + reader.getListObjet());
+		System.out.println("4 =" + reader.getListPref());
+
+		Equipage equipage = new Equipage(reader.getListPirate(), reader.getListeDeteste(), reader.getListPref());
 		Scanner sc = new Scanner(System.in);
 		int reponse = -1;
 		boolean termine = false;
@@ -31,7 +41,12 @@ public class Main2 {
 			}
 			
 			if(reponse == 3) {
-				Sauvegarder(sc, equipage);
+				try {
+					Sauvegarder(sc, equipage);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			
 			if(reponse == 4) {
@@ -126,24 +141,15 @@ public class Main2 {
 	}
 	
 	
-	public static void Sauvegarder(Scanner sc, Equipage equipage) {
-		
-		System.out.println("Quel est le nom du fichier dans lequel vous souhaitez enregistrer la sauvegarde actuelle ?");
-		String nomFile = sc.next();
-		File file = null;
-		try {
-			file = Writer.accessTofile(nomFile);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		try (PrintWriter printW = new PrintWriter(new BufferedWriter(new FileWriter(file)))) {
-			
-			for(int i=0;i<equipage.getEquipage().size();i++) {
-				printW.println(equipage.getEquipage().get(i).getID() + ":" + "o"+equipage.objet_recu.get(equipage.getEquipage().get(i)));
-			}
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
-			System.exit(1);
-		}
-	}
+	 public static void Sauvegarder(Scanner sc, Equipage equipage) throws IOException {
+
+		 System.out.println("Quel est le nom du fichier dans lequel vous souhaitez enregistrer la sauvegarde actuelle ?");
+		 String nomFile = sc.next();
+	     sc.close();
+	     Writer writer = new Writer(equipage.objet_recu);
+	     writer.writeTofile(nomFile);
+	     System.out.println("Votre fichier a bien ete enregistre. ");
+
+	  }
 }
+	

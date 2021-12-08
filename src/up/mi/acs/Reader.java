@@ -196,7 +196,6 @@ public class Reader {
 	}
 
 
-
 	public void setListPref(HashMap<String, ArrayList<String>> listPref) {
 		this.listPref = listPref;
 	}

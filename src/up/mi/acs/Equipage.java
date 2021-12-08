@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 
 /**
- * La classe Equipage repr�sente un equipage, elle permet d'effectuer diff�rentes actions sur les pirates
+ * La classe Equipage represente un equipage, elle permet d'effectuer diff�rentes actions sur les pirates
  * dont les principales definir le nombre de pirates de l'equipage et les
  * relations entre eux ainsi que d'attribuer a chaque pirate l'objet recu apres
  * la r�partition des biens selon l'utilisateur.
@@ -45,25 +45,50 @@ public class Equipage {
 		
 	}
 	
-	public Equipage(ArrayList<String> listPirate, ArrayList<String> listObjet, HashMap<String,String> listeDeteste,  HashMap<String,ArrayList<String>> listPref) {
+	// surcharge qui sert pour le main 2
+	public Equipage(ArrayList<String> listPirate, HashMap<String,String> listeDeteste,  HashMap<String,ArrayList<String>> listPref) {
+		// creer nombre pirate
 		this.nombre_pirate = listPirate.size();
+		System.out.println(listPirate);
+		System.out.println(listeDeteste);
+		System.out.println("listpref = " +listPref);
+
 		
+		// creer equipage cad l'arraylist de pirates
 		ArrayList<Pirate> equipage = new ArrayList<Pirate>();
 		for (String s : listPirate) {
+			System.out.println("s =" + s);
+
 			Pirate p = new Pirate(s);
+			System.out.println("p =" + p.getID());
 			String[] prefs = new String[listPref.size()];
-			for (int i = 0; i <listPref.get(p).size(); i++) {
-				prefs[i] = listPref.get(p).get(i);
+			System.out.println("listPref keys " + listPref.keySet());
+			System.out.println("listPref values " + listPref.values());
+			System.out.println("test = " +listPref.get(s).get(0));
+			for (int i = 0; i <listPref.get(s).size(); i++) {
+				prefs[i] = listPref.get(s).get(i);
 			}
 			p.addPreference(prefs);
 			equipage.add(p);
 		}
+		
+		// creer relation entre pirate
 		this.relation_pirate = new int[this.nombre_pirate][this.nombre_pirate];
 		initRelation();
+		int P1, P2;
+		boolean valide = false;
 		for (String key : listeDeteste.keySet() ) {
-			
+			// marche que si les pirates sont appeles par des chiffres tho
+			P1 = Integer.parseInt(key);
+			P2 = Integer.parseInt(listeDeteste.get(key));
+			if ((P1 >= 0 && P1 <=this.nombre_pirate) && (P2 >=0 && P2 <= this.nombre_pirate)) {
+				valide = true;
+			}
+			if ( valide ) {
+				this.relation_pirate[P1][P2] = 1;
+				this.relation_pirate[P2][P1] = 1;
+			}
 		}
-		
 		
 	}
 	
@@ -104,7 +129,7 @@ public class Equipage {
 			
 			System.out.println("La relation  ne s'aiment pas entre " +  A.getID() + " et " + B.getID() +" a bien ete ajoutee" );
 		}else {
-			System.out.print("Une erreur est survenue et la relation n'a pas pu �tre ajout�e ");
+			System.out.print("Une erreur est survenue et la relation n'a pas pu etre ajoutee ");
 		}
 
 	}
