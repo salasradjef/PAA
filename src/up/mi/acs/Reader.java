@@ -108,11 +108,11 @@ public class Reader {
 			String prefInfo = Lines.get(i).split("\\(")[0];
 			
 			if(prefInfo.equals("preferences")) {
-				String[] prefs = Lines.get(i).split("[\\(\\)]");
-				prefs = Lines.get(i).split(",");
+				String prefss = Lines.get(i).split("[\\(\\)]")[1];
+				String[] prefs = prefss.split(",");
 				
 				for(int j=1;j<=listObjet.size();j++) {
-					tmp.add(prefs[j]);
+						tmp.add(prefs[j]);
 				}
 				
 				listPref.put(prefs[0], tmp);
