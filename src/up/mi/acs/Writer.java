@@ -12,31 +12,37 @@ public class Writer {
         this.solution = solution;
     }
 
-    public static File accessTofile(String name) throws IOException {
-        File file = new File("C:\\Users\\Utilisateur\\eclipse-workspace\\PROJET_PAA\\src\\up\\mi\\acs\\results\\" + name);
+    public static File accessTofile(String name) {
+        File file = new File("./src/up/mi/acs/results/" + name);
 
         if(!file.exists()){
-            file.createNewFile();
-        
+            try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.err.println("Une erreur s'est produite lors de la création du fichier de sauvegarde.");
+			}
+
         }
-        
+
         return file;
     }
-        
+
+
     public void writeTofile(String name) throws IOException {
-        File file = new File("C:\\Users\\INFOTECH\\eclipse-workspace\\PROJET_PAA\\src\\up\\mi\\acs\\results\\" + name);
+        File file = new File("./src/up/mi/acs/results/" + name);
 
         if(!file.exists()){
             file.createNewFile();
         }
         FileWriter writer = new FileWriter(file);
         for(Pirate key : solution.keySet()){
-            String rslt = key.getID() + solution.get(key) + "\n";
+            String rslt = key.getID() + ":" +solution.get(key) + "\n";
             writer.write(rslt);
         }
     }
 
-    // manque le throw new Exception nn ?
+
 
 
 }

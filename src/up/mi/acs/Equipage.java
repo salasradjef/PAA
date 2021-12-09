@@ -1,5 +1,6 @@
 package up.mi.acs;
 
+import java.io.IOException;
 import java.util.*;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.HashMap;
 
 
 /**
- * La classe Equipage represente un equipage, elle permet d'effectuer diff�rentes actions sur les pirates
+ * La classe Equipage repr�sente un equipage, elle permet d'effectuer diff�rentes actions sur les pirates
  * dont les principales definir le nombre de pirates de l'equipage et les
  * relations entre eux ainsi que d'attribuer a chaque pirate l'objet recu apres
  * la r�partition des biens selon l'utilisateur.
@@ -22,75 +23,43 @@ public class Equipage {
 	private ArrayList<Pirate> equipage;
 	private int[][] relation_pirate;
 	private int nombre_pirate;
-	HashMap<Pirate, String> objet_recu;
-	
-	
-	
-	
-	
-	public Equipage(int nombre_pirate) {
-		this.nombre_pirate = nombre_pirate;
-		this.equipage = new ArrayList <Pirate>();
-		this.objet_recu = new HashMap<Pirate, String>();
-		
-		for(int i=0;i<nombre_pirate;i++) {
-			Pirate tmp = new Pirate(ALPHABET.ALPHABET[i]);
-			tmp.setPreference(new String[this.nombre_pirate]);
-			this.equipage.add(tmp);
-			objet_recu.put(tmp, null);
-		
+	private HashMap<Pirate, String> objet_recu;
+
+
+
+
+	public Equipage(String path) throws IOException {
+		Reader reader = new Reader(path);
+		ArrayList<Pirate> listPirate = new ArrayList<>();
+		this.objet_recu = new HashMap<>();
+		this.equipage = new ArrayList<>();
+
+		for(int i=0;i<reader.getListPirate().size();i++){
+			Pirate tmp = new Pirate(reader.getListPirate().get(i));
+			String[] prefs = new String[reader.getListPirate().size()];
+			for(int z=0;z<prefs.length;z++){
+				prefs[z] = reader.getListPref().get(tmp.getID()).get(z);
+			}
+			tmp.setPreference(prefs);
+			this.objet_recu.put(tmp,null);
+			listPirate.add(tmp);
 		}
-		this.relation_pirate = new int[this.nombre_pirate][this.nombre_pirate];
-		initRelation();
-		
-	}
-	
-	// surcharge qui sert pour le main 2
-	public Equipage(ArrayList<String> listPirate, HashMap<String,String> listeDeteste,  HashMap<String,ArrayList<String>> listPref) {
-		// creer nombre pirate
 		this.nombre_pirate = listPirate.size();
-		System.out.println(listPirate);
-		System.out.println(listeDeteste);
-		System.out.println("listpref = " +listPref);
-
-		
-		// creer equipage cad l'arraylist de pirates
-		ArrayList<Pirate> equipage = new ArrayList<Pirate>();
-		for (String s : listPirate) {
-			System.out.println("s =" + s);
-
-			Pirate p = new Pirate(s);
-			System.out.println("p =" + p.getID());
-			String[] prefs = new String[listPref.size()];
-			System.out.println("listPref keys " + listPref.keySet());
-			System.out.println("listPref values " + listPref.values());
-			System.out.println("test = " +listPref.get(s).get(0));
-			for (int i = 0; i <listPref.get(s).size(); i++) {
-				prefs[i] = listPref.get(s).get(i);
-			}
-			p.addPreference(prefs);
-			equipage.add(p);
-		}
-		
-		// creer relation entre pirate
 		this.relation_pirate = new int[this.nombre_pirate][this.nombre_pirate];
+		this.equipage.addAll(listPirate);
 		initRelation();
-		int P1, P2;
-		boolean valide = false;
-		for (String key : listeDeteste.keySet() ) {
-			// marche que si les pirates sont appeles par des chiffres tho
-			P1 = Integer.parseInt(key);
-			P2 = Integer.parseInt(listeDeteste.get(key));
-			if ((P1 >= 0 && P1 <=this.nombre_pirate) && (P2 >=0 && P2 <= this.nombre_pirate)) {
-				valide = true;
-			}
-			if ( valide ) {
-				this.relation_pirate[P1][P2] = 1;
-				this.relation_pirate[P2][P1] = 1;
-			}
+
+		HashMap<String,String> deteste = reader.getListeDeteste();
+		for(String key: deteste.keySet()){
+			Pirate a = findPirateByID(key);
+			Pirate b = findPirateByID(deteste.get(key));
+			this.addRelation(a,b);
+
 		}
-		
+
 	}
+
+
 	
 
 	private void initRelation(){
@@ -102,7 +71,18 @@ public class Equipage {
 		}
 	}
 
-	
+
+
+	public int getPosOfPirate(Pirate A){
+		for(int i=0;i<this.nombre_pirate;i++){
+			if(A.getID().equals(this.equipage.get(i).getID())){
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
 	/**
 	 * La m�thode addRelation permet � l'utilisateur d'ajouter une relation de rancoeur entre
 	 * deux pirates en ajoutant 1 � la matrice d'adjacence qui repr�sente un graphe  
@@ -115,21 +95,21 @@ public class Equipage {
 	public void addRelation(Pirate A, Pirate B) {
 		int P_A, P_B;
 		Boolean validation = false;
-		P_A = ALPHABET.getIDofALPHABET(A.getID());
-		P_B = ALPHABET.getIDofALPHABET(B.getID());
-		
+		P_A = this.getPosOfPirate(A);
+		P_B = this.getPosOfPirate(B);
+
 		if ((P_A >= 0 && P_A <=this.nombre_pirate) && (P_B >=0 && P_B<= this.nombre_pirate)) {
 			validation = true;
 		}
 		
-		
+
 		if(validation) {
 			this.relation_pirate[P_A][P_B] = 1;
 			this.relation_pirate[P_B][P_A] = 1;
 			
-			System.out.println("La relation  ne s'aiment pas entre " +  A.getID() + " et " + B.getID() +" a bien ete ajoutee" );
+			System.out.println("La relation  ne s'aiment pas entre " +  A.getID() + " et " + B.getID() +" a bien �t� ajout�e" );
 		}else {
-			System.out.print("Une erreur est survenue et la relation n'a pas pu etre ajoutee ");
+			System.out.print("Une erreur est survenue et la relation n'a pas pu �tre ajout�e ");
 		}
 
 	}
@@ -259,8 +239,8 @@ public class Equipage {
 	
 	public boolean hateRelation(Pirate A , Pirate B) {
 	
-	int a = this.relation_pirate[ALPHABET.getIDofALPHABET(A.getID())][ALPHABET.getIDofALPHABET(B.getID())];	
-	int b = this.relation_pirate[ALPHABET.getIDofALPHABET(B.getID())][ALPHABET.getIDofALPHABET(A.getID())];
+	int a = this.relation_pirate[this.getPosOfPirate(A)][this.getPosOfPirate(B)];
+	int b = this.relation_pirate[this.getPosOfPirate(B)][this.getPosOfPirate(A)];
 	
 		if(a ==1 && b ==1) {
 			return true;
@@ -293,16 +273,6 @@ public class Equipage {
 		return isIn;
 	}
 	
-	private boolean isIn(String x, String[] xs) {
-		 boolean isIn = false;
-		for(int i =0;i<xs.length;i++) {
-			if(x.equals(xs[i])) {
-				isIn =true;
-			}
-		}
-		return isIn;
-	}
-
 
 
 
@@ -322,5 +292,9 @@ public class Equipage {
 		this.relation_pirate = relation_pirate;
 	}
 	
-
+	public int getNombrePirate() {
+		return nombre_pirate;
+	}
+	
+	public HashMap<Pirate,String> getObjet_recu(){return this.objet_recu;}
 }
