@@ -26,7 +26,7 @@ public class Reader {
 			r = new FileReader(new File(path));
 
 		}catch(FileNotFoundException | NullPointerException e) {
-			System.err.println("Erreur : le fichier est introuvable");
+			System.err.println("Erreur : le fichier est introuvable, veuillez recommencer");
 			System.exit(0);
 		}
 
@@ -37,7 +37,8 @@ public class Reader {
 			reader = new BufferedReader(r);
 
 		}catch(NullPointerException e) {
-			System.err.println("Erreur lors de la création du buffered reader");
+			System.err.println("Erreur lors de la création du buffered reader, veuillez recommencer");
+			System.exit(0);
 		}
 
 		String s = "";

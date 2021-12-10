@@ -200,7 +200,10 @@ public class Main2 {
 				System.out.println("Voici la repartition actuelle des objets :");
 				for(int i=0;i<equipage.getNombrePirate();i++) {
 					System.out.println(equipage.getEquipage().get(i).getID() + ":"+equipage.getObjet_recu().get(equipage.getEquipage().get(i)));
-					}	
+					}
+				// affiche les objets que possede chaque pirate apres chaque action. 
+				// Nous avons determines lors de la lecture du sujet qu'il n'etait pas necessaire de le faire apres l'affectation naive,
+				// car il serait logique de s'interesser au cout de la solution initiale avant d'effectuer les echanges d'objets.
 				
 				if(reponse2 == 3) {
 					termine2 = true;

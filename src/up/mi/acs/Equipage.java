@@ -84,12 +84,12 @@ public class Equipage {
 	}
 
 	/**
-	 * La m�thode addRelation permet � l'utilisateur d'ajouter une relation de rancoeur entre
-	 * deux pirates en ajoutant 1 � la matrice d'adjacence qui repr�sente un graphe  
+	 * La m�thode addRelation permet a l'utilisateur d'ajouter une relation de rancoeur entre
+	 * deux pirates en ajoutant 1 a la matrice d'adjacence qui represente un graphe  
 	 * 
-	 * @param A repr�sente le pirate qui aura la relation "n'aime pas" avec le
+	 * @param A represente le pirate qui aura la relation "n'aime pas" avec le
 	 *          pirate B
-	 * @param B repr�sente le second pirate qui va partager la relation "n'aime pas"
+	 * @param B represente le second pirate qui va partager la relation "n'aime pas"
 	 *          avec A
 	 */
 	public void addRelation(Pirate A, Pirate B) {
@@ -107,9 +107,9 @@ public class Equipage {
 			this.relation_pirate[P_A][P_B] = 1;
 			this.relation_pirate[P_B][P_A] = 1;
 			
-			System.out.println("La relation  ne s'aiment pas entre " +  A.getID() + " et " + B.getID() +" a bien �t� ajout�e" );
+			//System.out.println("La relation  ne s'aiment pas entre " +  A.getID() + " et " + B.getID() +" a bien ete ajoutee" );
 		}else {
-			System.out.print("Une erreur est survenue et la relation n'a pas pu �tre ajout�e ");
+			System.out.print("Une erreur est survenue et la relation n'a pas pu etre ajoutee ");
 		}
 
 	}

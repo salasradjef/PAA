@@ -39,7 +39,7 @@ public class Writer {
         for(Pirate key : solution.keySet()){
             String rslt = key.getID() + ":" +solution.get(key) + "\n";
             writer.write(rslt);
-        }
+        } writer.close();
     }
 
 
