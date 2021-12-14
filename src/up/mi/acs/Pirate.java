@@ -2,8 +2,8 @@ package up.mi.acs;
 
 
 /**
- * La classe Pirate représente l'objet pirate avec son nom ainsi que l'ordre des
- * préférences des différents objets à se partager
+ * La classe Pirate reprï¿½sente l'objet pirate avec son nom ainsi que l'ordre des
+ * prï¿½fï¿½rences des diffï¿½rents objets ï¿½ se partager
  * @author Salas RADJEF
  * @author Christopher VIET
  * @author Amel NAIT AMER
@@ -12,7 +12,9 @@ package up.mi.acs;
 public class Pirate {
 	private String ID;
 	private String[] preference;
-	
+	private String objet_recu;
+
+
 	public Pirate(String ID) {
 		this.setID(ID);
 		
@@ -25,12 +27,12 @@ public class Pirate {
 	 * La methode addPreference permet a l'utilisateur d'ajouter a un pirate les ressources
 	 * selon l'ordre de ses preferences
 	 * 
-	 * @param objets tableau de String qui contient l'ID du pirate et les ressources à partager selon
+	 * @param objets tableau de String qui contient l'ID du pirate et les ressources ï¿½ partager selon
 	 *               l'ordre de preference du pirate 
 	 */
 	public void addPreference(String[] objets) {
-		//objets[0] => représente l'ID du pirate
-		//objets[1 -- > objets.length] => représente l'ensemble des préferences du pirate
+		//objets[0] => reprï¿½sente l'ID du pirate
+		//objets[1 -- > objets.length] => reprï¿½sente l'ensemble des prï¿½ferences du pirate
 		for (int i =0;i<(objets.length)-1;i++) {
 			this.preference[i] = objets[i+1];
 		
@@ -39,11 +41,11 @@ public class Pirate {
 	
 	
 	/**
-	 * La methode findIDofPref permet de chercher l'indice d'une ressource parmi celles à partager
-	 * representée par un String  à partir du tableau des preferences d'un pirate
+	 * La methode findIDofPref permet de chercher l'indice d'une ressource parmi celles ï¿½ partager
+	 * representï¿½e par un String  ï¿½ partir du tableau des preferences d'un pirate
 	 * 
-	 * @param x représente l'un des objets à partager sous forme d'un String
-	 * @return l'indice de l'objet x dans le tableau des preférences
+	 * @param x reprï¿½sente l'un des objets ï¿½ partager sous forme d'un String
+	 * @return l'indice de l'objet x dans le tableau des prefï¿½rences
 	 */
 	
 	public int findIDofPref(String x) {
@@ -89,5 +91,9 @@ public class Pirate {
 		ID = iD;
 	}
 
+
+	public String getObjet_recu() {return objet_recu;}
+
+	public void setObjet_recu(String objet_recu) {this.objet_recu = objet_recu; }
 }
 
