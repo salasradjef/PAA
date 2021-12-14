@@ -1,6 +1,7 @@
 package up.mi.acs;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -27,39 +28,50 @@ public class Equipage {
 
 
 
-	public Equipage(String path) throws IOException {
+	public Equipage(String path) throws IOException, ParseException {
 		Reader reader = new Reader(path);
 
-		if(reader.verify()){
-			ArrayList<Pirate> listPirate = new ArrayList<>();
-			this.objet_recu = new HashMap<>();
-			this.equipage = new ArrayList<>();
+		try {
+			if(reader.verify()){
+				ArrayList<Pirate> listPirate = new ArrayList<>();
+				this.objet_recu = new HashMap<>();
+				this.equipage = new ArrayList<>();
 
-			for(int i=0;i<reader.getListPirate().size();i++){
-				Pirate tmp = new Pirate(reader.getListPirate().get(i));
-				String[] prefs = new String[reader.getListPirate().size()];
-				for(int z=0;z<prefs.length;z++){
-					prefs[z] = reader.getListPref().get(tmp.getID()).get(z);
+				for(int i=0;i<reader.getListPirate().size();i++){
+					Pirate tmp = new Pirate(reader.getListPirate().get(i));
+					String[] prefs = new String[reader.getListPirate().size()];
+					
+					for(int z=0;z<prefs.length;z++){
+						prefs[z] = reader.getListPref().get(tmp.getID()).get(z);
+					}
+					tmp.setPreference(prefs);
+					this.objet_recu.put(tmp,null);
+					listPirate.add(tmp);
 				}
-				tmp.setPreference(prefs);
-				this.objet_recu.put(tmp,null);
-				listPirate.add(tmp);
-			}
-			this.nombre_pirate = listPirate.size();
-			this.relation_pirate = new int[this.nombre_pirate][this.nombre_pirate];
-			this.equipage.addAll(listPirate);
-			initRelation();
+				this.nombre_pirate = listPirate.size();
+				this.relation_pirate = new int[this.nombre_pirate][this.nombre_pirate];
+				this.equipage.addAll(listPirate);
+				initRelation();
 
-			HashMap<String,String> deteste = reader.getListeDeteste();
-			for(String key: deteste.keySet()){
-				Pirate a = findPirateByID(key);
-				Pirate b = findPirateByID(deteste.get(key));
-				this.addRelation(a,b);
-
+				HashMap<String,String> deteste = reader.getListeDeteste();
+				for(String key: deteste.keySet()){
+					Pirate a = findPirateByID(key);
+					Pirate b = findPirateByID(deteste.get(key));
+					// on verifie que les 2 pirates de la relation deteste existent avant de les ajouter.
+					if (a == null | b == null) {
+						String errorMessage = "Un des pirates appartenant a une relation deteste n'existe pas.";
+						throw new ParseException(errorMessage,0);
+					} else {
+						this.addRelation(a,b);
+					}
+				}
+				this.validation = true;
+			}else {
+				this.validation = false;
 			}
-			this.validation = true;
-		}else {
-			this.validation = false;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}

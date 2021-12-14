@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,7 +16,7 @@ public class Reader {
 	private ArrayList<String> listObjet;
 	private HashMap<String,String> listeDeteste;
 	private HashMap<String,ArrayList<String>> listPref;
-	private boolean verify;
+	//private boolean verify = false;
 
 
 
@@ -122,7 +123,12 @@ public class Reader {
 
 		r.close();
 
-		this.verify = verify();
+		try {
+			verify();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -130,11 +136,14 @@ public class Reader {
 
 	/*Method to verify*/
 
-	public boolean verify(){
+	public boolean verify() throws ParseException{
 		if(verifyListDeteste() && verifyListPref() && verifyPirate() && verifySyntax()){
 			return true;
 		}else {
-			return false;
+			String errorMessage = "La syntaxe du fichier contient des elements illisibles pour le parser, veuillez verifier votre fichier ";
+			throw new ParseException(errorMessage, 0);
+			
+			
 		}
 	}
 

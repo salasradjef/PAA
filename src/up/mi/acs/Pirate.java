@@ -96,4 +96,3 @@ public class Pirate {
 
 	public void setObjet_recu(String objet_recu) {this.objet_recu = objet_recu; }
 }
-
