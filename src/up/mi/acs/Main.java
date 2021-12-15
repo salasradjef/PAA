@@ -3,6 +3,7 @@ package up.mi.acs;
 
 
 import java.io.*;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Random;
@@ -11,7 +12,7 @@ import java.util.Scanner;
 public class Main {
 
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) throws IllegalArgumentException {
 
 
 
@@ -22,6 +23,8 @@ public class Main {
             // TODO Auto-generated catch block
             System.err.println("Erreur lors de la creation de l'equipage");
             System.exit(0);
+        } catch (ParseException e){
+        	e.printStackTrace();
         }
 
         if(equipage.isValidation()){
@@ -55,12 +58,13 @@ public class Main {
                 }
                 if (reponse == -1) {
                     System.out.println("Votre reponse n'est pas valide");
+                    throw new IllegalArgumentException();
                 }
             }
 
             sc.close();
         }else {
-            System.err.println("Le fichier passé en parametres est mal formaté");
+            System.err.println("Le fichier passé en parametres est mal syntaxé");
         }
     }
     public static int Menu(Scanner sc){
@@ -75,6 +79,8 @@ public class Main {
         } catch (InputMismatchException e) {
             System.out.println("Erreur, vous n'avez pas entre un chiffre !");
             sc.nextLine();
+        } catch (IllegalArgumentException e) {
+        	System.out.println("La réponse que vous avez entre ne correspond pas à un choix possible");
         }
         switch (key) {
             case 1:
@@ -94,13 +100,15 @@ public class Main {
         System.out.println("*-------Resolution Manuelle-------*");
         System.out.println("1)->Echanger objets");
         System.out.println("2)->Afficher Cout");
-        System.out.println("3)-> Revenir au menu pr�c�dent");
+        System.out.println("3)-> Revenir au menu precedent");
         int key = -1;
         try {
             key = sc.nextInt();
         } catch (InputMismatchException e) {
             System.out.println("Erreur, vous n'avez pas entre un chiffre !");
             sc.nextLine();
+        } catch (IllegalArgumentException e) {
+        	System.out.println("La réponse que vous avez entre ne correspond pas à un choix possible");
         }
         switch (key) {
             case 1:
@@ -151,7 +159,7 @@ public class Main {
         return equipage;
     }
 
-    public static Equipage ResManuelle(Equipage equipage, Scanner sc) {
+    public static Equipage ResManuelle(Equipage equipage, Scanner sc) throws IllegalArgumentException {
         boolean termine2 = false;
         while(!termine2) {
             int reponse2 = -1;
@@ -216,6 +224,7 @@ public class Main {
             }
             if (reponse2 == -1) {
                 System.out.println("Votre reponse n'est pas valide");
+                throw new IllegalArgumentException();
             }
 
         }

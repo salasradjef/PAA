@@ -1,14 +1,15 @@
 package up.mi.acs;
 
 import java.io.File;
-import java.io.FileWriter;
+//import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
 public class Writer {
-    private HashMap<Pirate,String> solution;
+    //private HashMap<Pirate,String> solution;
+
     public Writer(HashMap<Pirate,String> solution){
-        this.solution = solution;
+        //this.solution = solution;
     }
 
     public static File accessTofile(String name) {
@@ -16,10 +17,11 @@ public class Writer {
 
         if(!file.exists()){
             try {
-                file.createNewFile();
-            } catch (IOException e) {
-                System.err.println("Une erreur s'est produite lors de la creation du fichier de sauvegarde.");
-            }
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.err.println("Une erreur s'est produite lors de la création du fichier de sauvegarde.");
+			}
 
         }
 
@@ -27,8 +29,9 @@ public class Writer {
     }
 
 
-    public void writeTofile(String name) throws IOException {
+    /*public void writeTofile(String name) throws IOException {
         File file = new File("./src/up/mi/acs/results/" + name);
+
         if(!file.exists()){
             file.createNewFile();
         }
@@ -36,9 +39,8 @@ public class Writer {
         for(Pirate key : solution.keySet()){
             String rslt = key.getID() + ":" +solution.get(key) + "\n";
             writer.write(rslt);
-        }
-        writer.close();
-    }
+        } writer.close();
+    }*/
 
 
 
