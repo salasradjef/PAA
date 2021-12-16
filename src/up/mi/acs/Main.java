@@ -26,37 +26,36 @@ public class Main {
         }
 
         if(equipage.isValidation()){
+
             equipage.affectationNaive();
             Scanner sc = new Scanner(System.in);
             int reponse = -1;
             boolean termine = false;
             while (!termine) {
-                reponse = Menu(sc);
-
-                if( reponse == 1) {
-                    ResAuto(equipage,500);
-                }
-
-                if(reponse == 2) {
-                    ResManuelle(equipage, sc);
-                }
-
-                if(reponse == 3) {
-                    try {
-                        Sauvegarder(sc, equipage);
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        System.err.println("Une erreur s'est produite lors de l'ecriture dans le fichier de sauvegarde.");
+                try{
+                    reponse = Menu(sc);
+                    if( reponse == 1) {
+                        ResAuto(equipage,1000);
                     }
-                }
 
-                if(reponse == 4) {
-                    termine = true;
-                    System.out.println("Vous quittez le programme.");
-                }
-                if (reponse == -1) {
-                    System.err.println("Votre reponse n'est pas valide");
-                    throw new IllegalArgumentException();
+                    if(reponse == 2) {
+                        ResManuelle(equipage, sc);
+                    }
+
+                    if(reponse == 3) {
+                        try {
+                            Sauvegarder(sc, equipage);
+                        } catch (IOException e) {
+                            System.err.println("Une erreur s'est produite lors de l'ecriture dans le fichier de sauvegarde.");
+                        }
+                    }
+
+                    if(reponse == 4) {
+                        termine = true;
+                        System.out.println("Vous quittez le programme.");
+                    }
+                }catch(IllegalArgumentException e){
+                    System.err.println("paramétres incorrectes");
                 }
             }
 
@@ -65,6 +64,10 @@ public class Main {
             System.err.println("Le fichier passé en parametres est mal syntaxé");
         }
     }
+
+
+
+    /*Menu*/
     public static int Menu(Scanner sc){
         System.out.println("*-------Menu-------*");
         System.out.println("1)->Resolution automatique");
@@ -90,10 +93,15 @@ public class Main {
             case 4:
                 return 4;
             default:
-                return -1;
+                throw new IllegalArgumentException();
         }
     }
 
+
+
+
+
+    /*Menu pour la resolution manuelle*/
     public static int MenuResManuelle(Scanner sc) {
         System.out.println("*-------Resolution Manuelle-------*");
         System.out.println("1)->Echanger objets");
@@ -120,13 +128,20 @@ public class Main {
         }
     }
 
+
+
+
+
+
+
+
     public static Equipage ResAuto(Equipage equipage, int k) {
         int i = 0;
         int S = equipage.cost();
         while (i <k) {
             Pirate PirateRandom = equipage.getEquipage().get(new Random().nextInt(equipage.getEquipage().size()));
             ArrayList<Pirate> equipagee = equipage.getEquipage();
-            ArrayList<Pirate> deteste = new ArrayList<>();
+            ArrayList<Pirate> deteste = new ArrayList<>(); //ArrayList de pirates qui deteste notre pirateRandom
 
             for(int j=0;j<equipagee.size();j++){
                 if(equipage.hateRelation(PirateRandom,equipagee.get(j))){
@@ -156,6 +171,9 @@ public class Main {
 
         return equipage;
     }
+
+
+
 
     public static Equipage ResManuelle(Equipage equipage, Scanner sc) throws IllegalArgumentException {
         boolean termine2 = false;

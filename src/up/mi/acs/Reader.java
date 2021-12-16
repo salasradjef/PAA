@@ -16,6 +16,7 @@ public class Reader {
 	private ArrayList<String> listObjet;
 	private HashMap<String,String> listeDeteste;
 	private HashMap<String,ArrayList<String>> listPref;
+	private ArrayList<Integer> idOfErrors = new ArrayList<>();
 	//private boolean verify = false;
 
 
@@ -90,6 +91,8 @@ public class Reader {
 		for(int i=0;i<Lines.size()-1;i++) {
 			String dInfo = Lines.get(i).split("\\(")[0];
 			if(dInfo.equals("deteste")) {
+
+
 				String pirates = Lines.get(i).split("[\\(\\)]")[1];
 				String[] piratess = pirates.split(",");
 				String pirate1 = piratess[0];
@@ -107,6 +110,7 @@ public class Reader {
 			String prefInfo = Lines.get(i).split("\\(")[0];
 
 			if(prefInfo.equals("preferences")) {
+				try{
 				String prefss = Lines.get(i).split("[\\(\\)]")[1];
 				String[] prefs = prefss.split(",");
 
@@ -115,20 +119,17 @@ public class Reader {
 				}
 
 				listPref.put(prefs[0], tmp);
-			}
 
+				}catch(ArrayIndexOutOfBoundsException e){
+					System.err.println("Erreur dans le chargement des preferences, veuillez verifier la syntaxe de votre fichier");
+				}
+			}
 
 
 		}
 
 		r.close();
 
-		try {
-			verify();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 	}
 
@@ -140,7 +141,28 @@ public class Reader {
 		if(verifyListDeteste() && verifyListPref() && verifyPirate() && verifySyntax()){
 			return true;
 		}else {
-			String errorMessage = "La syntaxe du fichier contient des elements illisibles pour le parser, veuillez verifier votre fichier ";
+
+
+			String errorMessage;
+			if (this.idOfErrors.size() == 0) {
+				 errorMessage = "La syntaxe du fichier contient des elements illisibles pour le parser, veuillez verifier votre fichier ";
+			}else {
+				errorMessage = "La syntaxe du fichier contient des elements illisibles pour le parser, veuillez verifier votre fichier Verifiez ";
+				if(this.idOfErrors.size() > 1){
+					errorMessage += "les lignes ";
+					for(int i=0;i<this.idOfErrors.size();i++){
+						if(i == (this.idOfErrors.size() -1)){
+							errorMessage += (this.idOfErrors.get(i)+1) +" ";
+						}else {
+							errorMessage += (this.idOfErrors.get(i)+1)  + ",";
+						}
+					}
+
+				}else {
+					errorMessage += "la ligne " + (this.idOfErrors.get(0)+1)+ " ";
+				}
+				errorMessage += "De votre fichier d'equipage";
+			}
 			throw new ParseException(errorMessage, 0);
 			
 			
@@ -176,8 +198,6 @@ public class Reader {
 	private boolean verifyListPref(){
 
 		boolean verifiedPref = true;
-		//this.listPref // String , arrayLIst string
-		//this.listObjet ==> string
 		//Verifier que les preferences des pirates existent vraiment.
 		for(String s : this.listPref.keySet()){
 			ArrayList<String> tmp = this.listPref.get(s);
@@ -206,15 +226,17 @@ public class Reader {
 
 	private boolean verifySyntax(){
 		//Verifier que toutes les lignes de notre fichier se termine par "."
-		for(String s : this.Lines){
-			if(s!= null){
-				if(!s.endsWith(".")){
-					return false;
+		boolean verify = true;
+		for(int i=0;i<this.Lines.size();i++){
+			if(this.Lines.get(i)!= null){
+				if(!this.Lines.get(i).endsWith(".")){
+					idOfErrors.add(i);
+					verify = false;
 				}
 			}
 		}
 
-		return true;
+		return verify;
 	}
 
 
@@ -298,6 +320,8 @@ public class Reader {
 		}
 
 	}
+
+
 
 
 

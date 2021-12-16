@@ -38,15 +38,23 @@ public class Equipage {
 				this.equipage = new ArrayList<>();
 
 				for(int i=0;i<reader.getListPirate().size();i++){
-					Pirate tmp = new Pirate(reader.getListPirate().get(i));
-					String[] prefs = new String[reader.getListPirate().size()];
-					
-					for(int z=0;z<prefs.length;z++){
-						prefs[z] = reader.getListPref().get(tmp.getID()).get(z);
-					}
-					tmp.setPreference(prefs);
-					this.objet_recu.put(tmp,null);
-					listPirate.add(tmp);
+						try{
+
+							Pirate tmp = new Pirate(reader.getListPirate().get(i));
+							String[] prefs = new String[reader.getListPirate().size()];
+
+							for(int z=0;z<prefs.length;z++){
+								prefs[z] = reader.getListPref().get(tmp.getID()).get(z);
+							}
+							tmp.setPreference(prefs);
+							this.objet_recu.put(tmp,null);
+							listPirate.add(tmp);
+
+						}catch (NullPointerException e) {
+
+							System.err.println("Erreur de type nullPointer");
+						}
+
 				}
 				this.nombre_pirate = listPirate.size();
 				this.relation_pirate = new int[this.nombre_pirate][this.nombre_pirate];
@@ -70,8 +78,7 @@ public class Equipage {
 				this.validation = false;
 			}
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		}
 
 	}
@@ -101,7 +108,7 @@ public class Equipage {
 	}
 
 	/**
-	 * La m�thode addRelation permet a l'utilisateur d'ajouter une relation de rancoeur entre
+	 * La methode addRelation permet a l'utilisateur d'ajouter une relation de rancoeur entre
 	 * deux pirates en ajoutant 1 a la matrice d'adjacence qui represente un graphe
 	 *
 	 * @param A represente le pirate qui aura la relation "n'aime pas" avec le
@@ -277,9 +284,6 @@ public class Equipage {
 				break;
 			}
 		}
-
-
-
 		return isIn;
 	}
 
