@@ -39,9 +39,10 @@ public class Equipage {
 
 
 	public Equipage(String path) throws IOException, ParseException {
-		Reader reader = new Reader(path);
+
 
 		try {
+			Reader reader = new Reader(path);
 			if(reader.verify()){
 				ArrayList<Pirate> listPirate = new ArrayList<>();
 				this.objet_recu = new HashMap<>();
@@ -92,7 +93,7 @@ public class Equipage {
 				this.validation = false;
 			}
 		} catch (ParseException e) {
-			System.err.println(e.getMessage());
+			System.err.println(e.getMessage() + " " + e.getErrorOffset());
 		}
 
 	}

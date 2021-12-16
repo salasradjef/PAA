@@ -25,7 +25,7 @@ deteste(0,7).
 deteste(0,9).
 deteste(1,2).
 deteste(1,7).
-deteste(1,12).
+deteste(1,9).
 deteste(2,4).
 deteste(2,7).
 deteste(3,6).

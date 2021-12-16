@@ -30,7 +30,7 @@ public class Reader {
 
 
 
-	public Reader(String path) throws IOException  {
+	public Reader(String path) throws IOException, ParseException {
 		this.setFilePath(path);
 
 		FileReader r = null;
@@ -70,9 +70,106 @@ public class Reader {
 
 		}
 
+		this.listPirate = new ArrayList<>();
+		this.listObjet = new ArrayList<>();
+		this.listPref = new HashMap<>();
+		ArrayList<String> linesPreferences = new ArrayList<>();
+		String errorMessage = "Erreur a la ligne ";
+		ArrayList<String> linesDeteste = new ArrayList<>();
+		for(int i=0;i<Lines.size();i++){
+			if(Lines.get(i).startsWith("pirate")){
+				String nomPirate = Lines.get(i).split("[\\(\\)]")[1];
+				if(oneOccurence(nomPirate,this.listPirate)){
+					listPirate.add(nomPirate);
+				}else{
+					throw new ParseException(errorMessage,(i+1));
+				}
+
+			}else if(Lines.get(i).startsWith("objet")){
+				String nomObjet = Lines.get(i).split("[\\(\\)]")[1];
+				if(oneOccurence(nomObjet,this.listObjet)){
+					listObjet.add(nomObjet);
+				}else{
+					throw new ParseException(errorMessage,(i+1));
+				}
+				
+				if(Lines.get(i+1).startsWith("deteste")){
+					verifyPirateObject();
+					InitDeteste();
+				}
+
+			}else if(Lines.get(i).startsWith("deteste")){
 
 
-		/*Chargement des pirates*/
+				if(oneOccurence(Lines.get(i),linesDeteste)){
+					linesDeteste.add(Lines.get(i));
+					String[] pres = Lines.get(i).split("[\\(\\)]");
+					String[] nomsPirates = pres[1].split(",");
+					if(!isIn(nomsPirates[0],this.listPirate) && !isIn(nomsPirates[1],this.listPirate)){
+						throw new ParseException(errorMessage,(i+1));
+					}else {
+						String pirate1 = nomsPirates[0];
+						String pirate2 = nomsPirates[1];
+						ArrayList<String> ts = this.listeDeteste.get(pirate1);
+						if(ts == null){
+							ts = new ArrayList<>();
+							ts.add(pirate2);
+							this.listeDeteste.put(pirate1,ts);
+						}else {
+							ts.add(pirate2);
+							this.listeDeteste.put(pirate1,ts);
+						}
+
+					}
+
+				}else {
+					throw new ParseException(errorMessage,(i+1));
+				}
+
+			}else if(Lines.get(i).startsWith("preferences")){
+				if(oneOccurence(Lines.get(i),linesPreferences)){
+					linesPreferences.add(Lines.get(i));
+					String prefss = Lines.get(i).split("[\\(\\)]")[1];
+					String[] prefs = prefss.split(",");
+					if(isIn(prefs[0],this.listPirate)){
+						if((prefs.length-1) == this.listObjet.size()){
+							ArrayList<String> tmp = new ArrayList<>();
+							for(int j=1;i<prefs.length;j++){
+								if(!isIn(prefs[i],prefs)){
+									throw new ParseException(errorMessage,(i+1));
+								}
+							}
+
+							for(int j=1;j<=listObjet.size();j++) {
+								tmp.add(prefs[j]);
+							}
+
+							listPref.put(prefs[0], tmp);
+
+						}else {
+							throw new ParseException(errorMessage, (i+1));
+						}
+
+
+					}else{
+						throw new ParseException(errorMessage,(i+1));
+					}
+
+
+
+				}else {
+					throw new ParseException(errorMessage,(i+1));
+				}
+			}else {
+				throw new ParseException(errorMessage, i+1 );
+			}
+
+
+		}
+
+
+
+		/*Chargement des pirates*//*
 		this.listPirate =new ArrayList<>();
 		boolean lastPirate = false;
 		int cmp=0;
@@ -91,7 +188,7 @@ public class Reader {
 
 
 
-		/*Chargement des objets*/
+		*//*Chargement des objets*//*
 		this.listObjet = new ArrayList<>();
 		for(int i=0;i<Lines.size()-1;i++) {
 			String oInfo = Lines.get(i).split("\\(")[0];
@@ -104,7 +201,7 @@ public class Reader {
 
 
 
-		/**Chargement des relations "deteste"**/
+		*//**Chargement des relations "deteste"**//*
 		this.listeDeteste = new HashMap<>();
 		for(int i=0;i<this.listPirate.size();i++){
 			this.listeDeteste.put(this.listPirate.get(i),null);
@@ -132,7 +229,7 @@ public class Reader {
 			}
 		}
 
-		/*Chargement des preferences pour chaque pirate*/
+		*//*Chargement des preferences pour chaque pirate*//*
 		this.listPref = new HashMap<>();
 		for(int i=0;i<Lines.size();i++) {
 			ArrayList<String> tmp = new ArrayList<>();
@@ -157,7 +254,7 @@ public class Reader {
 
 
 		}
-
+*/
 		r.close();
 
 
@@ -165,10 +262,25 @@ public class Reader {
 
 
 
+	private void InitDeteste(){
+		this.listeDeteste = new HashMap<>();
+		for(int i=0;i<this.listPirate.size();i++){
+			this.listeDeteste.put(this.listPirate.get(i),null);
+		}
+	}
+	private void verifyPirateObject() throws ParseException {
+		if(listPirate.size() != listObjet.size()){
+			throw new ParseException("Le nombre de pirates n'est pas egale au nombre d'objets",0);
+		}
+	}
+
+
+
+
 	/*Method to verify*/
 
 	public boolean verify() throws ParseException{
-		if(/*verifyListDeteste() &&*/ verifyListPref() && verifyPirate() && verifySyntax()){
+		if(verifySyntax()){
 			return true;
 		}else {
 
@@ -342,17 +454,33 @@ public class Reader {
 	}
 
 
-	private boolean oneOccurence(String x, ArrayList<String> xs){
-		int cmp =0;
-		for(String s : xs ){
-			if(x.equals(s)){
-				cmp++;
+	private boolean isIn(String x, String[] xs) {
+		boolean isIn = false;
+		for(int i =0;i<xs.length;i++) {
+			if(x.equals(xs[i])) {
+				isIn =true;
 			}
 		}
-		if(cmp == 1){
+		return isIn;
+	}
+
+
+	private boolean oneOccurence(String x, ArrayList<String> xs){
+		int cmp =0;
+		if(xs== null){
 			return true;
 		}else {
-			return false;
+			for(String s : xs ){
+				if(x.equals(s)){
+					cmp++;
+				}
+			}
+			if(cmp == 0){
+				return true;
+			}else {
+				return false;
+			}
+
 		}
 
 	}
