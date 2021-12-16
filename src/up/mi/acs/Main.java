@@ -3,12 +3,10 @@ package up.mi.acs;
 
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.nio.file.FileAlreadyExistsException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -35,7 +33,8 @@ public class Main {
                 try{
                     reponse = Menu(sc);
                     if( reponse == 1) {
-                        ResAuto(equipage,1000);
+                       //ResAuto(equipage,50000);
+                        resNul(equipage);
                     }
 
                     if(reponse == 2) {
@@ -131,12 +130,105 @@ public class Main {
 
 
 
+/*
+public static void resTest(Equipage equipage){
 
+
+
+        ArrayList<Pirate> added = new ArrayList<>();
+        ArrayList<Pirate> equipagee = equipage.getEquipage();
+        HashMap<Pirate,Integer> costs = new HashMap<>();
+
+
+        while(added.size() != equipagee.size()){
+
+            Pirate PirateRandom = equipage.getEquipage().get(new Random().nextInt(equipage.getEquipage().size()));
+            if (!isIn(PirateRandom, added)) {
+                ArrayList<Pirate> visited = new ArrayList<>();
+                visited.add(PirateRandom);
+                equipage.affectationNaive();
+                ArrayList<Pirate> deteste = new ArrayList<>();
+                for (int j = 0; j < equipagee.size(); j++) {
+                    if (equipage.hateRelation(PirateRandom, equipagee.get(j))) {
+                        deteste.add(equipagee.get(j));
+                    }
+                }
+                ArrayList<Integer> litle_costs = new ArrayList<>();
+                //tanque j'ai pas visité tout les sommets voisins de notre sommet X je continue
+                while (visited.size() != deteste.size()) {
+                    Pirate VoisinRandom = deteste.get(new Random().nextInt(deteste.size()));
+                    if(VoisinRandom != null){
+                        if (!isIn(VoisinRandom, visited)) {
+                            equipage.changerObjet(PirateRandom, VoisinRandom);
+                        }
+
+                        litle_costs.add(equipage.cost());
+                        visited.add(VoisinRandom);
+                    }
+
+                }
+                added.add(PirateRandom);
+
+                //costs.put(PirateRandom,litle_costs.get(0));
+
+            }
+        }
+
+
+
+
+
+
+  }
+
+*/
+
+
+
+
+
+
+
+
+
+    public static void resNul(Equipage equipage){
+        ArrayList<String> deja_test = new ArrayList<>();
+        equipage.affectationStupide();
+        ArrayList<Pirate> equipagee = equipage.getEquipage();
+        int S = equipage.cost();
+        for(int j=0;j<equipagee.size();j++){
+            Pirate ts = equipagee.get(j);
+
+            for(int i=0;i<equipage.getObjets().size();i++){
+                String obj = equipage.getObjets().get(i);
+                Pirate tmp = null;
+                if(!isIn(obj,deja_test)){
+                     tmp = equipage.whichPirateUseMyObject(obj);
+                    equipage.changerObjet(ts,tmp);
+                }
+                int S2 = equipage.cost();
+
+                if(S2 < S){
+                    S = S2;
+                }else{
+                    equipage.changerObjet(tmp,ts);
+                }
+
+
+
+            }
+            System.out.println("voici result merde " + equipage.cost());
+        }
+
+
+
+    }
 
 
 
     public static Equipage ResAuto(Equipage equipage, int k) {
         int i = 0;
+        equipage.affectationStupide();
         int S = equipage.cost();
         while (i <k) {
             Pirate PirateRandom = equipage.getEquipage().get(new Random().nextInt(equipage.getEquipage().size()));
@@ -155,7 +247,7 @@ public class Main {
 
 
                 int S2 = equipage.cost();
-                System.out.println("Valeur de S =  " + S + " Valeur de S2 =  " + S2);
+                //System.out.println("Valeur de S =  " + S + " Valeur de S2 =  " + S2);
 
                 if (S2 < S) {
                     S = S2;
@@ -265,4 +357,20 @@ public class Main {
 
 
     }
+
+
+
+    /*Util*/
+    private static boolean isIn(String x, ArrayList<String> xs) {
+        boolean isIn = false;
+        for (String s : xs) {
+            if (x.equals(s)) {
+                isIn = true;
+                break;
+            }
+        }
+        return isIn;
+    }
+
+
 }

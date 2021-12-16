@@ -25,6 +25,16 @@ public class Equipage {
 	private HashMap<Pirate, String> objet_recu;
 	private boolean validation;
 
+	public ArrayList<String> getObjets() {
+		return objets;
+	}
+
+	public void setObjets(ArrayList<String> objets) {
+		this.objets = objets;
+	}
+
+	private ArrayList<String> objets;
+
 
 
 
@@ -58,6 +68,7 @@ public class Equipage {
 				}
 				this.nombre_pirate = listPirate.size();
 				this.relation_pirate = new int[this.nombre_pirate][this.nombre_pirate];
+				this.objets = reader.getListObjet();
 				this.equipage.addAll(listPirate);
 				initRelation();
 
@@ -175,12 +186,30 @@ public class Equipage {
 			for (String s : obj) {
 				if (!isIn(s, affecte)) {
 					this.objet_recu.put(tmp, s);
+					tmp.setObjet_recu(s);
+					affecte.add(s);
+					break;
+				}
+			}
+		}
+	}
+
+	public void affectationStupide(){
+		ArrayList<String> affecte = new ArrayList<>();
+		for(int i =(nombre_pirate-1);i>=0;i--) {
+			Pirate tmp = this.equipage.get(i);
+			String[] obj = tmp.getPreference();
+
+			for (String s : obj) {
+				if (!isIn(s, affecte)) {
+					this.objet_recu.put(tmp, s);
 					tmp.setObjet_recu(obj[i]);
 					affecte.add(s);
 					break;
 				}
 			}
 		}
+
 	}
 
 	/**
@@ -197,7 +226,9 @@ public class Equipage {
 		String recuB = this.objet_recu.get(B);
 
 		this.objet_recu.replace(A, recuB);
+		A.setObjet_recu(recuB);
 		this.objet_recu.replace(B, recuA);
+		B.setObjet_recu(recuA);
 	}
 
 	/**
@@ -288,6 +319,16 @@ public class Equipage {
 	}
 
 
+	public Pirate whichPirateUseMyObject(String object){
+		for(int i=0;i<this.nombre_pirate;i++){
+			if(this.equipage.get(i).getObjet_recu().equals(object)){
+				return this.equipage.get(i);
+			}
+
+		}
+		return null;
+
+	}
 
 
 	public ArrayList<Pirate> getEquipage() {

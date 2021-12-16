@@ -170,6 +170,8 @@ public class Reader {
 	}
 
 
+
+	//TODO verify that nb of pirates == nb of objects
 	private boolean verifyPirate(){
 		//verifier qu'il ya qu'une seule occurence pour chaque pirate
 		for(String s : this.listPirate){
