@@ -217,7 +217,7 @@ public static void resTest(Equipage equipage){
 
 
             }
-            System.out.println("voici result merde " + equipage.cost());
+            System.out.println("voici result " + equipage.cost());
         }
 
 
