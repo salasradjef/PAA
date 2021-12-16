@@ -3,16 +3,26 @@ package up.mi.acs;
 import java.io.*;
 //import java.io.FileWriter;
 import java.nio.file.FileAlreadyExistsException;
-import java.util.HashMap;
+//import java.util.HashMap;
+
+/**
+ * Cette classe permet d'enregistrer le resultat d'une resolution mannuelle ou
+ * automatique dans un fichier
+ * 
+ * @author RADJEF SALAS
+ * @author VIET CHRISTOPHER
+ * @author NAIT AMER AMEL
+ *
+ */
 
 public class Writer {
     //private HashMap<Pirate,String> solution;
 
-    public Writer(HashMap<Pirate,String> solution){
+    /*public Writer(HashMap<Pirate,String> solution){
         //this.solution = solution;
-    }
+    }*/
 
-    public static File accessTofile(String name) throws FileAlreadyExistsException {
+    /*public static File accessTofile(String name) throws FileAlreadyExistsException {
         File file = new File("./src/up/mi/acs/results/" + name);
 
         if(file.exists()){
@@ -21,13 +31,13 @@ public class Writer {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                System.err.println("Une erreur s'est produite lors de la crÃ©ation du fichier de sauvegarde.");
+                System.err.println("Une erreur s'est produite lors de la création du fichier de sauvegarde.");
             }
 
         }
 
         return file;
-    }
+    }*/
 
 
     public static void saveSolution(String fileName,Equipage equipage) throws IOException {
@@ -45,7 +55,7 @@ public class Writer {
                 writer.close();
 
             } catch (IOException e) {
-                System.err.println("Une erreur s'est produite lors de la crÃ©ation du fichier de sauvegarde.");
+                System.err.println("Une erreur s'est produite lors de la création du fichier de sauvegarde.");
 
             }
         }

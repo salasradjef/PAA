@@ -10,7 +10,7 @@ import java.util.*;
 public class Main {
 
 
-    public static void main(String[] args) throws IllegalArgumentException {
+    public static void main(String[] args) {
 
         Equipage equipage = null;
         try {
@@ -29,37 +29,39 @@ public class Main {
             int reponse = -1;
             boolean termine = false;
             while (!termine) {
-                try{
-                    reponse = Menu(sc);
-                    if( reponse == 1) {
-                       ResAuto(equipage,200);
-                        //resNul(equipage);
-                    }
-
-                    if(reponse == 2) {
-                        ResManuelle(equipage, sc);
-                    }
-
-                    if(reponse == 3) {
-                        try {
-                            Sauvegarder(sc, equipage);
-                        } catch (IOException e) {
-                            System.err.println("Une erreur s'est produite lors de l'ecriture dans le fichier de sauvegarde.");
-                        }
-                    }
-
-                    if(reponse == 4) {
-                        termine = true;
-                        System.out.println("Vous quittez le programme.");
-                    }
-                }catch(IllegalArgumentException e){
-                    System.err.println("paramétres incorrectes");
+            
+                reponse = Menu(sc);
+                if( reponse == 1) {
+                   ResAuto(equipage,200);
+                    //resNul(equipage);
                 }
+
+                if(reponse == 2) {
+                    ResManuelle(equipage, sc);
+                }
+
+                if(reponse == 3) {
+                    try {
+                        Sauvegarder(sc, equipage);
+                    } catch (IOException e) {
+                        System.err.println("Une erreur s'est produite lors de l'ecriture dans le fichier de sauvegarde.");
+                    }
+                }
+
+                if(reponse == 4) {
+                    termine = true;
+                    System.out.println("Vous quittez le programme.");
+                }
+                if (reponse == -1) {
+                    System.out.println("Votre reponse n'est pas valide");
+                }
+                
             }
 
             sc.close();
         }else {
             System.err.println("Le fichier passé en parametres est mal syntaxé");
+            System.exit(0);
         }
     }
 
@@ -78,9 +80,7 @@ public class Main {
         } catch (InputMismatchException e) {
             System.out.println("Erreur, vous n'avez pas entre un chiffre !");
             sc.nextLine();
-        } catch (IllegalArgumentException e) {
-        	System.out.println("La réponse que vous avez entre ne correspond pas à un choix possible");
-        }
+        } 
         switch (key) {
             case 1:
                 return 1;
@@ -91,7 +91,7 @@ public class Main {
             case 4:
                 return 4;
             default:
-                throw new IllegalArgumentException();
+                return -1;
         }
     }
 
@@ -111,9 +111,7 @@ public class Main {
         } catch (InputMismatchException e) {
             System.out.println("Erreur, vous n'avez pas entre un chiffre !");
             sc.nextLine();
-        } catch (IllegalArgumentException e) {
-        	System.out.println("La réponse que vous avez entre ne correspond pas à un choix possible");
-        }
+        } 
         switch (key) {
             case 1:
                 return 1;
@@ -243,7 +241,7 @@ public static void resTest(Equipage equipage){
                 Pirate VoisinRandom = deteste.get(new Random().nextInt(deteste.size()));
                 equipage.changerObjet(PirateRandom, VoisinRandom);
                 int S2 = equipage.cost();
-                System.out.println("Valeur de S =  " + S + " Valeur de S2 =  " + S2);
+                //System.out.println("Valeur de S =  " + S + " Valeur de S2 =  " + S2);
 
                 if (S2 < S) {
                     S = S2;
@@ -328,7 +326,6 @@ public static void resTest(Equipage equipage){
             }
             if (reponse2 == -1) {
                 System.out.println("Votre reponse n'est pas valide");
-                throw new IllegalArgumentException();
             }
 
         }
@@ -357,7 +354,7 @@ public static void resTest(Equipage equipage){
 
 
     /*Util*/
-    private static boolean isIn(String x, ArrayList<String> xs) {
+    /*private static boolean isIn(String x, ArrayList<String> xs) {
         boolean isIn = false;
         for (String s : xs) {
             if (x.equals(s)) {
@@ -366,7 +363,7 @@ public static void resTest(Equipage equipage){
             }
         }
         return isIn;
-    }
+    }*/
 
 
 }

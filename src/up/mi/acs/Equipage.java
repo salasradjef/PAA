@@ -8,10 +8,10 @@ import java.util.HashMap;
 
 
 /**
- * La classe Equipage repr�sente un equipage, elle permet d'effectuer diff�rentes actions sur les pirates
+ * La classe Equipage represente un equipage, elle permet d'effectuer differentes actions sur les pirates
  * dont les principales definir le nombre de pirates de l'equipage et les
  * relations entre eux ainsi que d'attribuer a chaque pirate l'objet recu apres
- * la r�partition des biens selon l'utilisateur.
+ * la repartition des biens selon l'utilisateur.
  * @author Salas RADJEF
  * @author Christopher VIET
  * @author Amel NAIT AMER
@@ -36,7 +36,18 @@ public class Equipage {
 	private ArrayList<String> objets;
 
 
-
+	/**
+	 * Le constructeur de Equipage d'initialiser les attributs de la classe en
+	 * recuperant le contenu à partir d'un fichier dont nous passons le chemin en
+	 * parametre
+	 * 
+	 * @param path : c'est un parametre de type String qui donne le chemin vers un
+	 *             le fichier ou il y a les informations de l'equipage et qui ont
+	 *             ete recuperer dans des variables de la classe Reader
+	 * @throws IOException : lève une exception si une erreur d'entrée/sortie s'est
+	 *                     produit ( si le fichier auquel nous voulons accéder
+	 *                     n'existe pas)
+	 */
 
 	public Equipage(String path) throws IOException, ParseException {
 
@@ -79,12 +90,13 @@ public class Equipage {
 						for (int i = 0; i < tst.size(); i++) {
 							Pirate b = findPirateByID(tst.get(i));
 							// on verifie que les 2 pirates de la relation deteste existent avant de les ajouter.
-							if (a == null | b == null) {
+							/*if (a == null | b == null) {
 								String errorMessage = "Un des pirates appartenant a une relation deteste n'existe pas.";
 								throw new ParseException(errorMessage, 0);
 							} else {
 								this.addRelation(a, b);
-							}
+							}*/
+							this.addRelation(a, b);
 						}
 					}
 				}
@@ -99,7 +111,10 @@ public class Equipage {
 	}
 
 
-
+	/**
+	 * Cette méthode permet d'initialiser à 0 le tableau à deux dimension
+	 * representer par l'attribut de la classe Equipage "relation_pirate"
+	 */
 
 	private void initRelation(){
 
@@ -110,7 +125,14 @@ public class Equipage {
 		}
 	}
 
-
+	/**
+	 * Une méthode qui nous permet d'avoir la position d'un pirate passé en
+	 * parametre dans l'ArrayList equipage en la parcourant. Dans le cas ou le
+	 * pirate n'existe pas dans l'equipage la methode retourne -1
+	 * 
+	 * @param A
+	 * @return la position d'un pirate dans l'ArrayList equipage
+	 */
 
 	public int getPosOfPirate(Pirate A){
 		for(int i=0;i<this.nombre_pirate;i++){
@@ -123,9 +145,10 @@ public class Equipage {
 	}
 
 	/**
-	 * La methode addRelation permet a l'utilisateur d'ajouter une relation de rancoeur entre
-	 * deux pirates en ajoutant 1 a la matrice d'adjacence qui represente un graphe
-	 *
+	 * La methode addRelation permet a l'utilisateur d'ajouter une relation de
+	 * rancoeur entre deux pirates en ajoutant 1 a la matrice d'adjacence qui
+	 * represente un graphe
+	 * 
 	 * @param A represente le pirate qui aura la relation "n'aime pas" avec le
 	 *          pirate B
 	 * @param B represente le second pirate qui va partager la relation "n'aime pas"
@@ -154,13 +177,13 @@ public class Equipage {
 	}
 
 	/**
-	 * La methode findPirateByID permet de r�cup�rer un pirate � partir de son ID (l'ID d'un pirate pass� en
-	 * param�tre) un pirate se trouve dans dans l'ArrayList qui repr�sente les
-	 * membres de l'equipage
-	 *
-	 * @param ID repr�sente l'ID du pirate, ce qui le distingue des autres pirates
-	 * @return l'objet pirate dans le cas o� nous l'avons trouv� qu'il appartient �
-	 *         l'equipage sinon elle retourne null
+	 * La methode findPirateByID permet de recuperer un pirate a partir de son
+	 * ID (l'ID d'un pirate passe en parametre) un pirate se trouve dans dans
+	 * l'ArrayList qui represente les membres de l'equipage
+	 * 
+	 * @param ID represente l'ID du pirate, ce qui le distingue des autres pirates
+	 * @return l'objet pirate dans le cas ou nous l'avons trouve qu'il
+	 *         appartient a l'equipage sinon elle retourne null
 	 */
 
 	public Pirate findPirateByID(String ID) {
@@ -176,10 +199,10 @@ public class Equipage {
 	}
 
 	/**
-	 * La m�thode affectationNaive permet d'affecter de fa�on na�ve � chaque pirate un objet parmi
-	 * ceux qu'il y � partager en fonction des pr�f�rences de chaqu'un.
-	 * Chaque pirate sera associ� � un objet et sera
-	 * repr�sent� dans une HashMap <Pirate,objet>
+	 * La methode affectationNaive permet d'affecter de facon naive et chaque
+	 * pirate un objet parmi ceux qu'il y a a partager en fonction des preferences
+	 * de chacun. Chaque pirate sera associe a un objet et sera represente
+	 * dans une HashMap <Pirate,objet>
 	 */
 	public void affectationNaive() {
 		ArrayList<String> affecte = new ArrayList<>();
@@ -198,7 +221,7 @@ public class Equipage {
 		}
 	}
 
-	public void affectationStupide(){
+	/*public void affectationStupide(){
 		ArrayList<String> affecte = new ArrayList<>();
 		for(int i =(nombre_pirate-1);i>=0;i--) {
 			Pirate tmp = this.equipage.get(i);
@@ -214,14 +237,14 @@ public class Equipage {
 			}
 		}
 
-	}
+	}*/
 
 	/**
-	 * La methode changerObjet permet � l'utilisateur d'�changer les objets entre deux pirates en
+	 * La methode changerObjet permet a l'utilisateur d'echanger les objets entre deux pirates en
 	 * utilisant la HashMap
 	 *
-	 * @param A repr�sente le pirate qui a l'un des objets a echanger
-	 * @param B repr�sente le pirate avec qui il va echanger objet avec le pirate
+	 * @param A represente le pirate qui a l'un des objets a echanger
+	 * @param B represente le pirate avec qui il va echanger objet avec le pirate
 	 *          du premier parametre
 	 */
 
@@ -236,9 +259,9 @@ public class Equipage {
 	}
 
 	/**
-	 * La m�thode calcule le nombre de pirates jaloux dans l'�quipage apr�s
+	 * La methode calcule le nombre de pirates jaloux dans l'equipage apres
 	 * l'attribution des objets
-	 *
+	 * 
 	 * @return le nombre de pirates jaloux
 	 */
 
@@ -263,11 +286,11 @@ public class Equipage {
 
 
 	/**
-	 * La m�thode v�rifie si le pirate A est jaloux du pirate B
+	 * La methode verifie si le pirate A est jaloux du pirate B
 	 *
-	 * @param A repr�sente un pirate de l'�quipage pour lequel on v�rifie s'il est
+	 * @param A represente un pirate de l'equipage pour lequel on verifie s'il est
 	 *          jaloux du pirate B
-	 * @param B repr�sente un pirate de l'�quipage
+	 * @param B represente un pirate de l'equipage
 	 * @return true si le pirate A est jaloux du pirate B sinon retourne faux
 	 */
 
@@ -304,11 +327,11 @@ public class Equipage {
 
 
 	/**
-	 * m�thode qui v�rifie si l'ID (nom) x d'un pirate se trouve dans un ArrayList
+	 * methode qui verifie si l'ID (nom) x d'un pirate se trouve dans un ArrayList
 	 * xs
 	 *
-	 * @param x  repr�sente une chaine de caract�res (String)
-	 * @param xs repr�sente un tableau dynamique (Tableau de String)
+	 * @param x  represente une chaine de caracteres (String)
+	 * @param xs represente un tableau dynamique (Tableau de String)
 	 * @return true si x appartient au  tableau dynamique xs
 	 */
 	private boolean isIn(String x, ArrayList<String> xs) {

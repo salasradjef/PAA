@@ -9,6 +9,17 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+/**
+ * Une classe qui permet de recuperer le contenu d'un fichier à travers un
+ * chemin et le stocker dans ses attributs
+ * 
+ * @author RADJEF SALAS
+ * @author VIET CHRISTOPHER
+ * @author NAIT AMER AMEL
+ *
+ */
+
 public class Reader {
 	private String filePath;
 	private ArrayList<String> Lines;
@@ -70,15 +81,28 @@ public class Reader {
 
 		}
 
+		// on cree les arraylist dont on va avoir besoin a l'interieur de la boucle
 		this.listPirate = new ArrayList<>();
 		this.listObjet = new ArrayList<>();
 		this.listPref = new HashMap<>();
+		
+		// ces deux arraylist nous permettent de vérifier qu'il n'y a qu'une occurence de chaque ligne, lorsque l'on utilise des hashmaps pour
+		// les stocker
+		
 		ArrayList<String> linesPreferences = new ArrayList<>();
-		String errorMessage = "Erreur a la ligne ";
 		ArrayList<String> linesDeteste = new ArrayList<>();
+		String errorMessage = "Erreur a la ligne ";
+		
+		
+		// pour toute cette boucle, on sait que les pirates sont tous definis en premier lieu dans le fichier
+		// puis les objets sont définis, les deteste et enfin les preferences
+		// si ce n'est pas le cas, le programme ne fonctionnera pas correctement
+		
 		for(int i=0;i<Lines.size();i++){
 			if(Lines.get(i).startsWith("pirate")){
 				String nomPirate = Lines.get(i).split("[\\(\\)]")[1];
+				
+				// on verifie que chaque pirate n'apparait qu'une fois
 				if(oneOccurence(nomPirate,this.listPirate)){
 					listPirate.add(nomPirate);
 				}else{
@@ -87,12 +111,16 @@ public class Reader {
 
 			}else if(Lines.get(i).startsWith("objet")){
 				String nomObjet = Lines.get(i).split("[\\(\\)]")[1];
+				
+				// on verifie que chaque objet n'apparait qu'une fois
 				if(oneOccurence(nomObjet,this.listObjet)){
 					listObjet.add(nomObjet);
 				}else{
 					throw new ParseException(errorMessage,(i+1));
 				}
 				
+				// comme explique au dessus, si la prochaine ligne commence par deteste, on sait qu'on a fini de traiter les objets
+				// on peut donc vérifier que le nombre d'objet est egal au nombre de pirate, et initialiser la hashmap des relations deteste
 				if(Lines.get(i+1).startsWith("deteste")){
 					verifyPirateObject();
 					InitDeteste();
@@ -100,12 +128,15 @@ public class Reader {
 
 			}else if(Lines.get(i).startsWith("deteste")){
 
-
+				// on verifie que chaque deteste n'apparait qu'une fois
 				if(oneOccurence(Lines.get(i),linesDeteste)){
 					linesDeteste.add(Lines.get(i));
 					String[] pres = Lines.get(i).split("[\\(\\)]");
 					String[] nomsPirates = pres[1].split(",");
-					if(!isIn(nomsPirates[0],this.listPirate) && !isIn(nomsPirates[1],this.listPirate)){
+					
+					// on verifie que les deux pirates existent
+					if(!isIn(nomsPirates[0],this.listPirate) || !isIn(nomsPirates[1],this.listPirate)){
+						System.err.println("Un des deux pirates indique dans la relation deteste n'existe pas");
 						throw new ParseException(errorMessage,(i+1));
 					}else {
 						String pirate1 = nomsPirates[0];
@@ -127,15 +158,24 @@ public class Reader {
 				}
 
 			}else if(Lines.get(i).startsWith("preferences")){
+				
+				// on verifie que chaque preferences n'apparait qu'une fois
 				if(oneOccurence(Lines.get(i),linesPreferences)){
 					linesPreferences.add(Lines.get(i));
 					String prefss = Lines.get(i).split("[\\(\\)]")[1];
 					String[] prefs = prefss.split(",");
+					
+					// on verifie que le pirate existe
 					if(isIn(prefs[0],this.listPirate)){
+						
+						// on verifie qu'il y a autant de preferences que d'objets
 						if((prefs.length-1) == this.listObjet.size()){
 							ArrayList<String> tmp = new ArrayList<>();
-							for(int j=1;i<prefs.length;j++){
-								if(!isIn(prefs[i],prefs)){
+							for(int j=1;j<prefs.length;j++){
+								
+								// on verifie que chaque objet de la preference existe
+								if(!isIn(prefs[j],this.listObjet)){
+									System.err.println("Un objet indique dans la preference n'existe pas");
 									throw new ParseException(errorMessage,(i+1));
 								}
 							}
@@ -147,11 +187,13 @@ public class Reader {
 							listPref.put(prefs[0], tmp);
 
 						}else {
+							System.err.println("Erreur au niveau du nombre d'objets dans la preference");
 							throw new ParseException(errorMessage, (i+1));
 						}
 
 
 					}else{
+						System.err.println("Le pirate indique dans la preference n'existe pas");
 						throw new ParseException(errorMessage,(i+1));
 					}
 
@@ -268,6 +310,8 @@ public class Reader {
 			this.listeDeteste.put(this.listPirate.get(i),null);
 		}
 	}
+	
+	
 	private void verifyPirateObject() throws ParseException {
 		if(listPirate.size() != listObjet.size()){
 			throw new ParseException("Le nombre de pirates n'est pas egale au nombre d'objets",0);
@@ -313,8 +357,8 @@ public class Reader {
 
 
 
-	//TODO verify that nb of pirates == nb of objects
-	private boolean verifyPirate(){
+	
+	/*private boolean verifyPirate(){
 		//verifier qu'il ya qu'une seule occurence pour chaque pirate
 		for(String s : this.listPirate){
 			if(!oneOccurence(s,this.listPirate)){
@@ -342,9 +386,9 @@ public class Reader {
 			}
 		}
 		return verified;
-	}
+	}*/
 
-	private boolean verifyListPref(){
+	/*private boolean verifyListPref(){
 
 		boolean verifiedPref = true;
 		//Verifier que les preferences des pirates existent vraiment.
@@ -369,7 +413,7 @@ public class Reader {
 
 
 		return (verifiedPirate && verifiedPref);
-	}
+	}*/
 
 
 
@@ -454,7 +498,7 @@ public class Reader {
 	}
 
 
-	private boolean isIn(String x, String[] xs) {
+	/*private boolean isIn(String x, String[] xs) {
 		boolean isIn = false;
 		for(int i =0;i<xs.length;i++) {
 			if(x.equals(xs[i])) {
@@ -462,7 +506,7 @@ public class Reader {
 			}
 		}
 		return isIn;
-	}
+	}*/
 
 
 	private boolean oneOccurence(String x, ArrayList<String> xs){

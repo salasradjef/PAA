@@ -2,8 +2,8 @@ package up.mi.acs;
 
 
 /**
- * La classe Pirate repr�sente l'objet pirate avec son nom ainsi que l'ordre des
- * pr�f�rences des diff�rents objets � se partager
+ * La classe Pirate represente l'objet pirate avec son nom ainsi que l'ordre des
+ * preferences des differents objets a se partager
  * @author Salas RADJEF
  * @author Christopher VIET
  * @author Amel NAIT AMER
@@ -41,11 +41,11 @@ public class Pirate {
 	
 	
 	/**
-	 * La methode findIDofPref permet de chercher l'indice d'une ressource parmi celles � partager
-	 * represent�e par un String  � partir du tableau des preferences d'un pirate
+	 * La methode findIDofPref permet de chercher l'indice d'une ressource parmi celles a partager
+	 * (represente par un String) a partir du tableau des preferences d'un pirate
 	 * 
-	 * @param x repr�sente l'un des objets � partager sous forme d'un String
-	 * @return l'indice de l'objet x dans le tableau des pref�rences
+	 * @param x represente l'un des objets a partager sous forme d'un String
+	 * @return l'indice de l'objet x dans le tableau des preferences
 	 */
 	
 	public int findIDofPref(String x) {
