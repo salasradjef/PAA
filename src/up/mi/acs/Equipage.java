@@ -49,7 +49,6 @@ public class Equipage {
 
 				for(int i=0;i<reader.getListPirate().size();i++){
 						try{
-
 							Pirate tmp = new Pirate(reader.getListPirate().get(i));
 							String[] prefs = new String[reader.getListPirate().size()];
 
@@ -61,8 +60,7 @@ public class Equipage {
 							listPirate.add(tmp);
 
 						}catch (NullPointerException e) {
-
-							System.err.println("Erreur de type nullPointer");
+							e.printStackTrace();
 						}
 
 				}
@@ -72,16 +70,21 @@ public class Equipage {
 				this.equipage.addAll(listPirate);
 				initRelation();
 
-				HashMap<String,String> deteste = reader.getListeDeteste();
+				HashMap<String,ArrayList<String>> deteste = reader.getListeDeteste();
 				for(String key: deteste.keySet()){
 					Pirate a = findPirateByID(key);
-					Pirate b = findPirateByID(deteste.get(key));
-					// on verifie que les 2 pirates de la relation deteste existent avant de les ajouter.
-					if (a == null | b == null) {
-						String errorMessage = "Un des pirates appartenant a une relation deteste n'existe pas.";
-						throw new ParseException(errorMessage,0);
-					} else {
-						this.addRelation(a,b);
+					ArrayList <String> tst = deteste.get(key);
+					if(tst != null) {
+						for (int i = 0; i < tst.size(); i++) {
+							Pirate b = findPirateByID(tst.get(i));
+							// on verifie que les 2 pirates de la relation deteste existent avant de les ajouter.
+							if (a == null | b == null) {
+								String errorMessage = "Un des pirates appartenant a une relation deteste n'existe pas.";
+								throw new ParseException(errorMessage, 0);
+							} else {
+								this.addRelation(a, b);
+							}
+						}
 					}
 				}
 				this.validation = true;
@@ -319,16 +322,6 @@ public class Equipage {
 	}
 
 
-	public Pirate whichPirateUseMyObject(String object){
-		for(int i=0;i<this.nombre_pirate;i++){
-			if(this.equipage.get(i).getObjet_recu().equals(object)){
-				return this.equipage.get(i);
-			}
-
-		}
-		return null;
-
-	}
 
 
 	public ArrayList<Pirate> getEquipage() {

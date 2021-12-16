@@ -3,7 +3,6 @@ package up.mi.acs;
 
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.nio.file.FileAlreadyExistsException;
 import java.text.ParseException;
 import java.util.*;
@@ -33,8 +32,8 @@ public class Main {
                 try{
                     reponse = Menu(sc);
                     if( reponse == 1) {
-                       //ResAuto(equipage,50000);
-                        resNul(equipage);
+                       ResAuto(equipage,200);
+                        //resNul(equipage);
                     }
 
                     if(reponse == 2) {
@@ -191,7 +190,8 @@ public static void resTest(Equipage equipage){
 
 
 
-    public static void resNul(Equipage equipage){
+
+  /*  public static void resNul(Equipage equipage){
         ArrayList<String> deja_test = new ArrayList<>();
         equipage.affectationStupide();
         ArrayList<Pirate> equipagee = equipage.getEquipage();
@@ -214,21 +214,19 @@ public static void resTest(Equipage equipage){
                     equipage.changerObjet(tmp,ts);
                 }
 
-
-
             }
             System.out.println("voici result " + equipage.cost());
         }
 
 
 
-    }
+    }*/
 
 
 
     public static Equipage ResAuto(Equipage equipage, int k) {
         int i = 0;
-        equipage.affectationStupide();
+        //equipage.affectationStupide();
         int S = equipage.cost();
         while (i <k) {
             Pirate PirateRandom = equipage.getEquipage().get(new Random().nextInt(equipage.getEquipage().size()));
@@ -244,10 +242,8 @@ public static void resTest(Equipage equipage){
             if(deteste.size() != 0){
                 Pirate VoisinRandom = deteste.get(new Random().nextInt(deteste.size()));
                 equipage.changerObjet(PirateRandom, VoisinRandom);
-
-
                 int S2 = equipage.cost();
-                //System.out.println("Valeur de S =  " + S + " Valeur de S2 =  " + S2);
+                System.out.println("Valeur de S =  " + S + " Valeur de S2 =  " + S2);
 
                 if (S2 < S) {
                     S = S2;

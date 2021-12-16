@@ -14,7 +14,16 @@ public class Reader {
 	private ArrayList<String> Lines;
 	private ArrayList<String> listPirate;
 	private ArrayList<String> listObjet;
-	private HashMap<String,String> listeDeteste;
+
+	public HashMap<String, ArrayList<String>> getListeDeteste() {
+		return listeDeteste;
+	}
+
+	public void setListeDeteste(HashMap<String, ArrayList<String>> listeDeteste) {
+		this.listeDeteste = listeDeteste;
+	}
+
+	private HashMap<String,ArrayList<String>> listeDeteste;
 	private HashMap<String,ArrayList<String>> listPref;
 	private ArrayList<Integer> idOfErrors = new ArrayList<>();
 	//private boolean verify = false;
@@ -44,11 +53,20 @@ public class Reader {
 			System.exit(0);
 		}
 
-		String s = "";
+		String s = ""; int z=0;
 		this.Lines = new ArrayList<>();
 		while(s != null) {
 			s = reader.readLine();
-			Lines.add(s);
+			z++;
+			if(s != null){
+				if(s.equals("")){
+					System.out.println("la ligne " + z +   " est vide, veuillez la supprimer");
+					System.exit(0);
+
+				}else {
+					Lines.add(s);
+				}
+			}
 
 		}
 
@@ -88,23 +106,35 @@ public class Reader {
 
 		/**Chargement des relations "deteste"**/
 		this.listeDeteste = new HashMap<>();
-		for(int i=0;i<Lines.size()-1;i++) {
+		for(int i=0;i<this.listPirate.size();i++){
+			this.listeDeteste.put(this.listPirate.get(i),null);
+		}
+
+		for(int i=0;i<Lines.size();i++) {
 			String dInfo = Lines.get(i).split("\\(")[0];
 			if(dInfo.equals("deteste")) {
-
-
 				String pirates = Lines.get(i).split("[\\(\\)]")[1];
 				String[] piratess = pirates.split(",");
 				String pirate1 = piratess[0];
 				String pirate2 = piratess[1];
-				listeDeteste.put(pirate1, pirate2);
+				//ArrayList<String> tmp = new ArrayList<>();
+				ArrayList<String> ts = this.listeDeteste.get(pirate1);
+				if(ts == null){
+					ts = new ArrayList<>();
+					ts.add(pirate2);
+					this.listeDeteste.put(pirate1,ts);
+				}else {
+					ts.add(pirate2);
+					this.listeDeteste.put(pirate1,ts);
+				}
+
 
 			}
 		}
 
 		/*Chargement des preferences pour chaque pirate*/
 		this.listPref = new HashMap<>();
-		for(int i=0;i<Lines.size()-1;i++) {
+		for(int i=0;i<Lines.size();i++) {
 			ArrayList<String> tmp = new ArrayList<>();
 
 			String prefInfo = Lines.get(i).split("\\(")[0];
@@ -138,7 +168,7 @@ public class Reader {
 	/*Method to verify*/
 
 	public boolean verify() throws ParseException{
-		if(verifyListDeteste() && verifyListPref() && verifyPirate() && verifySyntax()){
+		if(/*verifyListDeteste() &&*/ verifyListPref() && verifyPirate() && verifySyntax()){
 			return true;
 		}else {
 
@@ -188,10 +218,15 @@ public class Reader {
 		//Verifier que les pirates qui se deteste existent tous.
 		boolean verified = true;
 		for(String key : this.listeDeteste.keySet()){
-			if(!isIn(key,this.listPirate) && !isIn(this.listeDeteste.get(key),this.listPirate)){
-				verified = false;
-			}else if(key.equals(this.listeDeteste.get(key))){
-				verified = false;
+			if(!isIn(key,this.listPirate)){
+				System.out.println("L'erreur est au niveau du pirate" + key);
+			}else {
+				for(String s : this.listeDeteste.get(key)){
+					if(!isIn(s,this.listeDeteste.get(key))){
+						verified = false;
+						System.out.println("Erreur dans le pirate " + s);
+					}
+				}
 			}
 		}
 		return verified;
@@ -223,6 +258,9 @@ public class Reader {
 
 		return (verifiedPirate && verifiedPref);
 	}
+
+
+
 
 
 
@@ -276,10 +314,6 @@ public class Reader {
 
 
 	public void setListObjet(ArrayList<String> listObjet) {this.listObjet = listObjet;}
-
-	public HashMap<String, String> getListeDeteste() {return listeDeteste;}
-
-	public void setListeDeteste(HashMap<String, String> listeDeteste) {this.listeDeteste = listeDeteste;}
 
 
 
