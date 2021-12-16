@@ -361,6 +361,15 @@ public static void resTest(Equipage equipage){
 
 
     /*Util*/
+	/**
+	 * methode qui verifie si l'ID (nom) x d'un pirate qui est un String se trouve dans un ArrayList
+	 * xs
+	 * 
+	 * @param x  represente une chaine de caracteres (String)
+	 * @param xs represente un tableau dynamique (Tableau de String)
+	 * @return true si x appartient au tableau dynamique xs
+	 */
+    
     private static boolean isIn(String x, ArrayList<String> xs) {
         boolean isIn = false;
         for (String s : xs) {
