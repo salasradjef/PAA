@@ -3,6 +3,7 @@ package up.mi.acs;
 
 
 import java.io.*;
+import java.nio.file.FileAlreadyExistsException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -14,13 +15,10 @@ public class Main {
 
     public static void main(String[] args) throws IllegalArgumentException {
 
-
-
         Equipage equipage = null;
         try {
             equipage = new Equipage(args[0]);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             System.err.println("Erreur lors de la creation de l'equipage");
             System.exit(0);
         } catch (ParseException e){
@@ -57,7 +55,7 @@ public class Main {
                     System.out.println("Vous quittez le programme.");
                 }
                 if (reponse == -1) {
-                    System.out.println("Votre reponse n'est pas valide");
+                    System.err.println("Votre reponse n'est pas valide");
                     throw new IllegalArgumentException();
                 }
             }
@@ -233,30 +231,19 @@ public class Main {
     }
 
 
-    /*   public static void Sauvegarder(Scanner sc, Equipage equipage) throws IOException {
-
-           System.out.println("Quel est le nom du fichier dans lequel vous souhaitez enregistrer la sauvegarde actuelle ?");
-           String nomFile = sc.next();
-           Writer writer = new Writer(equipage.getObjet_recu());
-           writer.writeTofile(nomFile);
-           System.out.println("Votre fichier a bien ete enregistre. ");
-
-       }*/
     public static void Sauvegarder(Scanner sc, Equipage equipage) throws IOException {
-
         System.out.println("Quel est le nom du fichier dans lequel vous souhaitez enregistrer la sauvegarde actuelle ?");
         String nomFile = sc.next();
-        File file = null;
-        file = Writer.accessTofile(nomFile);
-        FileWriter fr = new FileWriter(file);
-        try (PrintWriter printW = new PrintWriter(new BufferedWriter(fr))) {
-
-            for(int i=0;i<equipage.getEquipage().size();i++) {
-                printW.println(equipage.getEquipage().get(i).getID() + ":" +equipage.getObjet_recu().get(equipage.getEquipage().get(i)));
+        while(true){
+            try{
+                Writer.saveSolution(nomFile,equipage);
+                System.out.println("Votre fichier a bien ete enregistre. ");
+                break;
+            }catch(FileAlreadyExistsException e){
+                System.err.println("Le nom du fichier que vous avez saisie existe déja ");
+                nomFile = sc.next();
             }
         }
-
-        fr.close();
 
 
     }

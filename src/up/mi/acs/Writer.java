@@ -1,8 +1,8 @@
 package up.mi.acs;
 
-import java.io.File;
+import java.io.*;
 //import java.io.FileWriter;
-import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.HashMap;
 
 public class Writer {
@@ -12,16 +12,17 @@ public class Writer {
         //this.solution = solution;
     }
 
-    public static File accessTofile(String name) {
+    public static File accessTofile(String name) throws FileAlreadyExistsException {
         File file = new File("./src/up/mi/acs/results/" + name);
 
-        if(!file.exists()){
+        if(file.exists()){
+                throw new FileAlreadyExistsException(file.getAbsolutePath());
+        }else {
             try {
-				file.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				System.err.println("Une erreur s'est produite lors de la cr�ation du fichier de sauvegarde.");
-			}
+                file.createNewFile();
+            } catch (IOException e) {
+                System.err.println("Une erreur s'est produite lors de la création du fichier de sauvegarde.");
+            }
 
         }
 
@@ -29,18 +30,36 @@ public class Writer {
     }
 
 
-    /*public void writeTofile(String name) throws IOException {
-        File file = new File("./src/up/mi/acs/results/" + name);
+    public static void saveSolution(String fileName,Equipage equipage) throws IOException {
+        File file = new File("./src/up/mi/acs/results/" + fileName);
+        if(file.exists()){
+            throw new FileAlreadyExistsException(file.getAbsolutePath());
+        }else {
+            try {
+                file.createNewFile();
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                for(int i=0;i<equipage.getEquipage().size();i++) {
+                    writer.write(equipage.getEquipage().get(i).getID() + ":" +equipage.getObjet_recu().get(equipage.getEquipage().get(i)) + "\n");
 
-        if(!file.exists()){
-            file.createNewFile();
+                }
+                writer.close();
+
+            } catch (IOException e) {
+                System.err.println("Une erreur s'est produite lors de la création du fichier de sauvegarde.");
+
+            }
         }
-        FileWriter writer = new FileWriter(file);
-        for(Pirate key : solution.keySet()){
-            String rslt = key.getID() + ":" +solution.get(key) + "\n";
-            writer.write(rslt);
-        } writer.close();
-    }*/
+
+
+
+
+
+
+
+    }
+
+
+
 
 
 
