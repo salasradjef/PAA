@@ -1,10 +1,11 @@
 package up.mi.acs.Tests;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.text.ParseException;
+
 import org.junit.jupiter.api.Test;
+
 import up.mi.acs.Equipage;
 import up.mi.acs.Pirate;
 

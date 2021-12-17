@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PROJET_PAA:jar">
+    <output-path>$USER_HOME$/Desktop</output-path>
+    <root id="archive" name="PROJET_PAA.jar">
+      <element id="module-output" name="PROJET_PAA" />
+    </root>
+  </artifact>
+</component>

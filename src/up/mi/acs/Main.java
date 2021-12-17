@@ -20,6 +20,9 @@ public class Main {
             System.exit(0);
         } catch (ParseException e){
         	e.printStackTrace();
+        } catch(ArrayIndexOutOfBoundsException e) {
+        	System.err.print("Veuillez passer le chemin complet de votre fichier equipage");
+        	System.exit(0);
         }
 
         if(equipage.isValidation()){
