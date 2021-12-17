@@ -244,7 +244,7 @@ public class Main {
 	 * @param sc       : un flux d'entree qui permet a l'utilisateur de saisir les
 	 *                 pirates entre lesquels il veut echanger les objets
 	 * 
-	 * @return
+	 * @return         :l'equipage qui a ete utilise pour cette solution
 	 */
 	public static Equipage ResManuelle(Equipage equipage, Scanner sc) throws IllegalArgumentException {
 		boolean termine2 = false;
