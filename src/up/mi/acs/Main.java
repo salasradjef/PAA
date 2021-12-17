@@ -29,11 +29,9 @@ public class Main {
             int reponse = -1;
             boolean termine = false;
             while (!termine) {
-            
                 reponse = Menu(sc);
                 if( reponse == 1) {
                    ResAuto(equipage,200);
-                    //resNul(equipage);
                 }
 
                 if(reponse == 2) {
@@ -127,101 +125,19 @@ public class Main {
 
 
 
-/*
-public static void resTest(Equipage equipage){
 
-
-
-        ArrayList<Pirate> added = new ArrayList<>();
-        ArrayList<Pirate> equipagee = equipage.getEquipage();
-        HashMap<Pirate,Integer> costs = new HashMap<>();
-
-
-        while(added.size() != equipagee.size()){
-
-            Pirate PirateRandom = equipage.getEquipage().get(new Random().nextInt(equipage.getEquipage().size()));
-            if (!isIn(PirateRandom, added)) {
-                ArrayList<Pirate> visited = new ArrayList<>();
-                visited.add(PirateRandom);
-                equipage.affectationNaive();
-                ArrayList<Pirate> deteste = new ArrayList<>();
-                for (int j = 0; j < equipagee.size(); j++) {
-                    if (equipage.hateRelation(PirateRandom, equipagee.get(j))) {
-                        deteste.add(equipagee.get(j));
-                    }
-                }
-                ArrayList<Integer> litle_costs = new ArrayList<>();
-                //tanque j'ai pas visité tout les sommets voisins de notre sommet X je continue
-                while (visited.size() != deteste.size()) {
-                    Pirate VoisinRandom = deteste.get(new Random().nextInt(deteste.size()));
-                    if(VoisinRandom != null){
-                        if (!isIn(VoisinRandom, visited)) {
-                            equipage.changerObjet(PirateRandom, VoisinRandom);
-                        }
-
-                        litle_costs.add(equipage.cost());
-                        visited.add(VoisinRandom);
-                    }
-
-                }
-                added.add(PirateRandom);
-
-                //costs.put(PirateRandom,litle_costs.get(0));
-
-            }
-        }
-
-
-
-
-
-
-  }
-
-*/
-
-
-
-
-
-
-
-
-
-
-  /*  public static void resNul(Equipage equipage){
-        ArrayList<String> deja_test = new ArrayList<>();
-        equipage.affectationStupide();
-        ArrayList<Pirate> equipagee = equipage.getEquipage();
-        int S = equipage.cost();
-        for(int j=0;j<equipagee.size();j++){
-            Pirate ts = equipagee.get(j);
-
-            for(int i=0;i<equipage.getObjets().size();i++){
-                String obj = equipage.getObjets().get(i);
-                Pirate tmp = null;
-                if(!isIn(obj,deja_test)){
-                     tmp = equipage.whichPirateUseMyObject(obj);
-                    equipage.changerObjet(ts,tmp);
-                }
-                int S2 = equipage.cost();
-
-                if(S2 < S){
-                    S = S2;
-                }else{
-                    equipage.changerObjet(tmp,ts);
-                }
-
-            }
-            System.out.println("voici result " + equipage.cost());
-        }
-
-
-
-    }*/
-
-
-
+    /**
+     * La methode ResAuto est une methode static qui applique un algorithme de
+     * resolution qui essaie de trouver le cout minimum d'une solution pour des
+     * combinaison de (pirate,objet) qui donne le moins de pirates jaloux possible
+     *
+     * @param equipage : un parametre de type Equipage qui permet d'acceder au
+     *                 differentes informations concerant les pirates et les
+     *                 relations entre eux
+     * @param k       : un entier donne par l'utilisateur
+     *
+     * @return l'equipage qui a ete utilise pour cette solution
+     */
     public static Equipage ResAuto(Equipage equipage, int k) {
         int i = 0;
         //equipage.affectationStupide();
@@ -261,6 +177,20 @@ public static void resTest(Equipage equipage){
 
 
 
+    /**
+     * La methode resManuelle permet de trouver le cout d'une repartition des objets
+     * sur les pirates (nombre de pirates jaloux pour une repartition). Permet
+     * egalement de changer la repartition entre les pirates choisi par
+     * l'utilisateur et affiche les objets que possede chaque pirate apres chaque
+     * action
+     *
+     * @param equipage : est de type Equipage. C'est l'equipage sur lequel on va
+     *                 appliquer la resolution
+     * @param sc       : un flux d'entree qui permet a l'utilisateur de saisir les
+     *                 pirates entre lesquels il veut echanger les objets
+     *
+     * @return
+     */
     public static Equipage ResManuelle(Equipage equipage, Scanner sc) throws IllegalArgumentException {
         boolean termine2 = false;
         while(!termine2) {
@@ -334,6 +264,15 @@ public static void resTest(Equipage equipage){
     }
 
 
+    /**
+     * La methode Sauvegarder permet de sauvegarder dans un fichier une l'equipage
+     * qui a ete utilise lors de l'execution du projet
+     *
+     * @param sc       : c'est un flux d'entree qui va nous permettre de saisir le
+     *                 nom du fichier dans lequel on veut sauvegarder l'equipage
+     * @param equipage :est de type Equipage et represente l'equipage a sauvegarder
+     *
+     */
     public static void Sauvegarder(Scanner sc, Equipage equipage) throws IOException {
         System.out.println("Quel est le nom du fichier dans lequel vous souhaitez enregistrer la sauvegarde actuelle ?");
         String nomFile = sc.next();
@@ -351,19 +290,6 @@ public static void resTest(Equipage equipage){
 
     }
 
-
-
-    /*Util*/
-    /*private static boolean isIn(String x, ArrayList<String> xs) {
-        boolean isIn = false;
-        for (String s : xs) {
-            if (x.equals(s)) {
-                isIn = true;
-                break;
-            }
-        }
-        return isIn;
-    }*/
 
 
 }

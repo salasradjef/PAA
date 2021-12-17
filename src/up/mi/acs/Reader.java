@@ -11,12 +11,14 @@ import java.util.HashMap;
 
 
 /**
- * Une classe qui permet de recuperer le contenu d'un fichier à travers un
- * chemin et le stocker dans ses attributs
- * 
- * @author RADJEF SALAS
- * @author VIET CHRISTOPHER
- * @author NAIT AMER AMEL
+ * Une classe qui permet de recuperer le contenu d'un fichier Ã  travers un
+ * chemin et de stocker chaque information dans l'attribut qui lui convient.
+ * Elle fait egalement divers verifications pour s'assurer que le contenu du
+ * fichier a bien Ã©tÃ© copier et ne contient pas le caracteres incomprehensible
+ *
+ * @author Salas Radjef
+ * @author Christopher Viet
+ * @author Amel Nait Amer
  *
  */
 
@@ -26,20 +28,27 @@ public class Reader {
 	private ArrayList<String> listPirate;
 	private ArrayList<String> listObjet;
 
-	public HashMap<String, ArrayList<String>> getListeDeteste() {
-		return listeDeteste;
-	}
-
-	public void setListeDeteste(HashMap<String, ArrayList<String>> listeDeteste) {
-		this.listeDeteste = listeDeteste;
-	}
-
 	private HashMap<String,ArrayList<String>> listeDeteste;
 	private HashMap<String,ArrayList<String>> listPref;
 	private ArrayList<Integer> idOfErrors = new ArrayList<>();
 	//private boolean verify = false;
 
 
+	/**
+	 * Le constructeur de la classe permet de charger le contenu du fichier dont
+	 * nous avons donner le chemin en paremetre et remplir en fonction de ca les
+	 * attributs de la classe Reader. Les donnees a recuperer sont les noms des
+	 * pirates,les objets,les preferences de chaque pirate et les pirates qui se
+	 * detestent dans l'equipage
+	 *
+	 * @param path :c'est un parametre de type String qui donne le chemin vers un le
+	 *             fichier ou il y a les informations concernant l'equipage
+	 * @throws IOException    : leve une exception si une erreur d'entree/sortie
+	 *                        s'est produit ( si le fichier auquel nous voulons
+	 *                        accÃ©der n'existe pas)
+	 * @throws ParseException : leve une exception et renvoie le message d'erreur
+	 *                        qui a ete precise
+	 */
 
 	public Reader(String path) throws IOException, ParseException {
 		this.setFilePath(path);
@@ -86,7 +95,7 @@ public class Reader {
 		this.listObjet = new ArrayList<>();
 		this.listPref = new HashMap<>();
 		
-		// ces deux arraylist nous permettent de vérifier qu'il n'y a qu'une occurence de chaque ligne, lorsque l'on utilise des hashmaps pour
+		// ces deux arraylist nous permettent de verifier qu'il n'y a qu'une occurence de chaque ligne, lorsque l'on utilise des hashmaps pour
 		// les stocker
 		
 		ArrayList<String> linesPreferences = new ArrayList<>();
@@ -95,7 +104,7 @@ public class Reader {
 		
 		
 		// pour toute cette boucle, on sait que les pirates sont tous definis en premier lieu dans le fichier
-		// puis les objets sont définis, les deteste et enfin les preferences
+		// puis les objets sont definis, les deteste et enfin les preferences
 		// si ce n'est pas le cas, le programme ne fonctionnera pas correctement
 		
 		for(int i=0;i<Lines.size();i++){
@@ -120,7 +129,7 @@ public class Reader {
 				}
 				
 				// comme explique au dessus, si la prochaine ligne commence par deteste, on sait qu'on a fini de traiter les objets
-				// on peut donc vérifier que le nombre d'objet est egal au nombre de pirate, et initialiser la hashmap des relations deteste
+				// on peut donc vï¿½rifier que le nombre d'objet est egal au nombre de pirate, et initialiser la hashmap des relations deteste
 				if(Lines.get(i+1).startsWith("deteste")){
 					verifyPirateObject();
 					InitDeteste();
@@ -141,15 +150,22 @@ public class Reader {
 					}else {
 						String pirate1 = nomsPirates[0];
 						String pirate2 = nomsPirates[1];
-						ArrayList<String> ts = this.listeDeteste.get(pirate1);
-						if(ts == null){
-							ts = new ArrayList<>();
-							ts.add(pirate2);
-							this.listeDeteste.put(pirate1,ts);
+						if(!pirate1.equals(pirate2)){ //Verifier que les pirates dans la relation deteste sont differents
+							ArrayList<String> ts = this.listeDeteste.get(pirate1);
+							if(ts == null){
+								ts = new ArrayList<>();
+								ts.add(pirate2);
+								this.listeDeteste.put(pirate1,ts);
+							}else {
+								ts.add(pirate2);
+								this.listeDeteste.put(pirate1,ts);
+							}
 						}else {
-							ts.add(pirate2);
-							this.listeDeteste.put(pirate1,ts);
+							System.err.println("Le meme pirate ne peux pas se detester lui meme ");
+							throw new ParseException(errorMessage,(i+1));
 						}
+
+
 
 					}
 
@@ -211,97 +227,15 @@ public class Reader {
 
 
 
-		/*Chargement des pirates*//*
-		this.listPirate =new ArrayList<>();
-		boolean lastPirate = false;
-		int cmp=0;
-
-		while(!lastPirate) {
-			String[] pInfo = Lines.get(cmp).split("\\(");
-			if(pInfo[0].equals("pirate")) {
-				String nomPirate = Lines.get(cmp).split("[\\(\\)]")[1];
-				listPirate.add(nomPirate);
-				cmp++;
-			}else {
-				lastPirate = true;
-			}
-
-		}
-
-
-
-		*//*Chargement des objets*//*
-		this.listObjet = new ArrayList<>();
-		for(int i=0;i<Lines.size()-1;i++) {
-			String oInfo = Lines.get(i).split("\\(")[0];
-			if(oInfo.equals("objet")) {
-				String nomObjet = Lines.get(i).split("[\\(\\)]")[1];
-				listObjet.add(nomObjet);
-			}
-
-		}
-
-
-
-		*//**Chargement des relations "deteste"**//*
-		this.listeDeteste = new HashMap<>();
-		for(int i=0;i<this.listPirate.size();i++){
-			this.listeDeteste.put(this.listPirate.get(i),null);
-		}
-
-		for(int i=0;i<Lines.size();i++) {
-			String dInfo = Lines.get(i).split("\\(")[0];
-			if(dInfo.equals("deteste")) {
-				String pirates = Lines.get(i).split("[\\(\\)]")[1];
-				String[] piratess = pirates.split(",");
-				String pirate1 = piratess[0];
-				String pirate2 = piratess[1];
-				//ArrayList<String> tmp = new ArrayList<>();
-				ArrayList<String> ts = this.listeDeteste.get(pirate1);
-				if(ts == null){
-					ts = new ArrayList<>();
-					ts.add(pirate2);
-					this.listeDeteste.put(pirate1,ts);
-				}else {
-					ts.add(pirate2);
-					this.listeDeteste.put(pirate1,ts);
-				}
-
-
-			}
-		}
-
-		*//*Chargement des preferences pour chaque pirate*//*
-		this.listPref = new HashMap<>();
-		for(int i=0;i<Lines.size();i++) {
-			ArrayList<String> tmp = new ArrayList<>();
-
-			String prefInfo = Lines.get(i).split("\\(")[0];
-
-			if(prefInfo.equals("preferences")) {
-				try{
-				String prefss = Lines.get(i).split("[\\(\\)]")[1];
-				String[] prefs = prefss.split(",");
-
-				for(int j=1;j<=listObjet.size();j++) {
-					tmp.add(prefs[j]);
-				}
-
-				listPref.put(prefs[0], tmp);
-
-				}catch(ArrayIndexOutOfBoundsException e){
-					System.err.println("Erreur dans le chargement des preferences, veuillez verifier la syntaxe de votre fichier");
-				}
-			}
-
-
-		}
-*/
 		r.close();
-
 
 	}
 
+	/**
+	 * methode qui permet d'init une HashMap(relation deteste entre pirates)
+	 * chaque pirate sera represente comme une key, et une ArrayList sera associe a cette key, elle represente la liste des noms
+	 * de pirates que la key deteste
+	 */
 
 
 	private void InitDeteste(){
@@ -310,24 +244,35 @@ public class Reader {
 			this.listeDeteste.put(this.listPirate.get(i),null);
 		}
 	}
-	
-	
-	private void verifyPirateObject() throws ParseException {
-		if(listPirate.size() != listObjet.size()){
-			throw new ParseException("Le nombre de pirates n'est pas egale au nombre d'objets",0);
-		}
-	}
+
 
 
 
 
 	/*Method to verify*/
 
+
+	/**
+	 * methode qui permet de verifier si le nombre de pirates est le meme que le
+	 * nombre d'objets a se partager en levant une exception dasn le cas echeant
+	 *
+	 */
+	private void verifyPirateObject() throws ParseException {
+		if(listPirate.size() != listObjet.size()){
+			throw new ParseException("Le nombre de pirates n'est pas egale au nombre d'objets",0);
+		}
+	}
+
+	/**
+	 * methode qui permet de verifier si le fichier contient des elements illisible
+	 *
+	 * @retrun true si le fichier n'a pas d'erreur sinon false
+	 */
+
 	public boolean verify() throws ParseException{
 		if(verifySyntax()){
 			return true;
 		}else {
-
 
 			String errorMessage;
 			if (this.idOfErrors.size() == 0) {
@@ -350,78 +295,20 @@ public class Reader {
 				errorMessage += "De votre fichier d'equipage";
 			}
 			throw new ParseException(errorMessage, 0);
-			
+
 			
 		}
 	}
 
 
 
-	
-	/*private boolean verifyPirate(){
-		//verifier qu'il ya qu'une seule occurence pour chaque pirate
-		for(String s : this.listPirate){
-			if(!oneOccurence(s,this.listPirate)){
-				return false;
-			}
-		}
 
-		return true;
-	}
-
-
-	private boolean verifyListDeteste(){
-		//Verifier que les pirates qui se deteste existent tous.
-		boolean verified = true;
-		for(String key : this.listeDeteste.keySet()){
-			if(!isIn(key,this.listPirate)){
-				System.out.println("L'erreur est au niveau du pirate" + key);
-			}else {
-				for(String s : this.listeDeteste.get(key)){
-					if(!isIn(s,this.listeDeteste.get(key))){
-						verified = false;
-						System.out.println("Erreur dans le pirate " + s);
-					}
-				}
-			}
-		}
-		return verified;
-	}*/
-
-	/*private boolean verifyListPref(){
-
-		boolean verifiedPref = true;
-		//Verifier que les preferences des pirates existent vraiment.
-		for(String s : this.listPref.keySet()){
-			ArrayList<String> tmp = this.listPref.get(s);
-			for(String objet : tmp){
-			 	if(!isIn(objet,this.listObjet)){
-					 verifiedPref = false;
-				}
-			}
-
-		}
-
-		//Verifier que les pirates dans listPref existent vraiment
-		boolean verifiedPirate = true;
-		for(String pirate : this.listPref.keySet() ){
-			if(!isIn(pirate,this.listPirate)){
-				verifiedPirate = false;
-			}
-		}
-
-
-
-		return (verifiedPirate && verifiedPref);
-	}*/
-
-
-
-
-
-
+	/**
+	 * methode qui verifie que toutes les lignes de notre fichier se termine par "."
+	 *
+	 * @return vrai si toute les lignes se termine par un point sinon retourne faux
+	 */
 	private boolean verifySyntax(){
-		//Verifier que toutes les lignes de notre fichier se termine par "."
 		boolean verify = true;
 		for(int i=0;i<this.Lines.size();i++){
 			if(this.Lines.get(i)!= null){
@@ -477,6 +364,14 @@ public class Reader {
 		return listPref;
 	}
 
+
+	public HashMap<String, ArrayList<String>> getListeDeteste() {
+		return listeDeteste;
+	}
+
+	public void setListeDeteste(HashMap<String, ArrayList<String>> listeDeteste) {
+		this.listeDeteste = listeDeteste;
+	}
 
 	public void setListPref(HashMap<String, ArrayList<String>> listPref) {
 		this.listPref = listPref;

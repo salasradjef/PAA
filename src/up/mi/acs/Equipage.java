@@ -221,23 +221,6 @@ public class Equipage {
 		}
 	}
 
-	/*public void affectationStupide(){
-		ArrayList<String> affecte = new ArrayList<>();
-		for(int i =(nombre_pirate-1);i>=0;i--) {
-			Pirate tmp = this.equipage.get(i);
-			String[] obj = tmp.getPreference();
-
-			for (String s : obj) {
-				if (!isIn(s, affecte)) {
-					this.objet_recu.put(tmp, s);
-					tmp.setObjet_recu(obj[i]);
-					affecte.add(s);
-					break;
-				}
-			}
-		}
-
-	}*/
 
 	/**
 	 * La methode changerObjet permet a l'utilisateur d'echanger les objets entre deux pirates en
