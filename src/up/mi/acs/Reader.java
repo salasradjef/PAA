@@ -381,6 +381,15 @@ public class Reader {
 
 
 	/*Util*/
+	/**
+	 * methode qui verifie si un String x  se trouve dans un ArrayList
+	 * xs
+	 *
+	 * @param x  represente une chaine de caracteres (String)
+	 * @param xs represente un tableau dynamique (Tableau de String)
+	 * @return true si x appartient au  tableau dynamique xs
+	 */
+
 	private boolean isIn(String x, ArrayList<String> xs) {
 		boolean isIn = false;
 		for(int i =0;i<xs.size();i++) {
@@ -392,21 +401,18 @@ public class Reader {
 		return isIn;
 	}
 
-
-	/*private boolean isIn(String x, String[] xs) {
-		boolean isIn = false;
-		for(int i =0;i<xs.length;i++) {
-			if(x.equals(xs[i])) {
-				isIn =true;
-			}
-		}
-		return isIn;
-	}*/
-
+	/**
+	 * methode qui verifie si il ya une seule occurence d'un String x dans un ArrayList de String
+	 * xs
+	 *
+	 * @param x  represente une chaine de caracteres (String)
+	 * @param xs represente un tableau dynamique (Tableau de String)
+	 * @return true si x sera la premiere occurence dans xs
+	 */
 
 	private boolean oneOccurence(String x, ArrayList<String> xs){
 		int cmp =0;
-		if(xs== null){
+		if(xs == null){
 			return true;
 		}else {
 			for(String s : xs ){

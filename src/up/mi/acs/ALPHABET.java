@@ -1,7 +1,8 @@
 package up.mi.acs;
 
 /**
- *Classe qui permet d'avoir les lettres alphabétiques en majuscules qui vont 
+ * !!!! Dans notre V2 du projet cette Classe ne sert a rien.!!!!
+ *Classe qui permet d'avoir les lettres alphabï¿½tiques en majuscules qui vont
  *correspondre au nom des pirates.
  * @author Salas RADJEF
  * @author Christopher VIET
@@ -14,11 +15,11 @@ public class ALPHABET {
 	
 	
 	/**
-	 * Méthode qui permet d'avoir l'indice (la position) d'une lettre passée en
-	 * paramètre dans le tableau de String ALPHABET
+	 * Mï¿½thode qui permet d'avoir l'indice (la position) d'une lettre passï¿½e en
+	 * paramï¿½tre dans le tableau de String ALPHABET
 	 * 
 	 * @param S  lettre pour laquelle nous voulons connaitre l'indice
-	 * @return l'indice de la lettre passée en paramètre sinon -1 dans le cas ou la lettre n'est pas dans ALPHABET
+	 * @return l'indice de la lettre passï¿½e en paramï¿½tre sinon -1 dans le cas ou la lettre n'est pas dans ALPHABET
 	 */
 	public static int getIDofALPHABET(String S) {
 		Boolean trouver= false;

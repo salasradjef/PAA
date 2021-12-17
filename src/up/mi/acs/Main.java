@@ -279,7 +279,7 @@ public class Main {
         while(true){
             try{
                 Writer.saveSolution(nomFile,equipage);
-                System.out.println("Votre fichier a bien ete enregistre. ");
+                System.out.println("Votre fichier " +  nomFile+ " a bien ete enregistre dans le dossier results. ");
                 break;
             }catch(FileAlreadyExistsException e){
                 System.err.println("Le nom du fichier que vous avez saisie existe déja ");

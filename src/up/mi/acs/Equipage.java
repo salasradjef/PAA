@@ -24,15 +24,6 @@ public class Equipage {
 	private int nombre_pirate;
 	private HashMap<Pirate, String> objet_recu;
 	private boolean validation;
-
-	public ArrayList<String> getObjets() {
-		return objets;
-	}
-
-	public void setObjets(ArrayList<String> objets) {
-		this.objets = objets;
-	}
-
 	private ArrayList<String> objets;
 
 
@@ -89,13 +80,6 @@ public class Equipage {
 					if(tst != null) {
 						for (int i = 0; i < tst.size(); i++) {
 							Pirate b = findPirateByID(tst.get(i));
-							// on verifie que les 2 pirates de la relation deteste existent avant de les ajouter.
-							/*if (a == null | b == null) {
-								String errorMessage = "Un des pirates appartenant a une relation deteste n'existe pas.";
-								throw new ParseException(errorMessage, 0);
-							} else {
-								this.addRelation(a, b);
-							}*/
 							this.addRelation(a, b);
 						}
 					}
@@ -314,7 +298,7 @@ public class Equipage {
 	 * xs
 	 *
 	 * @param x  represente une chaine de caracteres (String)
-	 * @param xs represente un tableau dynamique (Tableau de String)
+	 * @param xs represente un tableau dynamique (ArrayList de String)
 	 * @return true si x appartient au  tableau dynamique xs
 	 */
 	private boolean isIn(String x, ArrayList<String> xs) {
@@ -330,6 +314,7 @@ public class Equipage {
 
 
 
+	/*Getters and Setters*/
 
 	public ArrayList<Pirate> getEquipage() {
 		return equipage;
@@ -355,4 +340,13 @@ public class Equipage {
 	}
 
 	public HashMap<Pirate,String> getObjet_recu(){return this.objet_recu;}
+
+	public ArrayList<String> getObjets() {
+		return objets;
+	}
+
+	public void setObjets(ArrayList<String> objets) {
+		this.objets = objets;
+	}
+
 }
